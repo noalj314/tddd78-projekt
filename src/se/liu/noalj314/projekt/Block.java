@@ -2,7 +2,6 @@ package se.liu.noalj314.projekt;
 
 import java.util.Date;
 
-
 public class Block {
     public String hash;
     public String previousHash;
