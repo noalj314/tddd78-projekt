@@ -1,5 +1,8 @@
 package se.liu.noalj314.projekt;
 
+import java.security.PrivateKey;
+import java.security.PublicKey;
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Block {
@@ -9,7 +12,7 @@ public class Block {
     private final long timeStamp;
     private int nonce;
     private static int difficulty = 4;
-
+    private ArrayList<Transaction> transactions = new ArrayList<Transaction>(); // våra transaktioner
     public Block(String data) {
         this.data = data;
         this.timeStamp = new Date().getTime();
@@ -35,5 +38,9 @@ public class Block {
             System.out.println("Nonce: " + nonce + "\n" + "Hash Attempted: " + hash);
         }
         System.out.println("Block Mined! Nonce to solve: " + nonce);
+    }
+
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
     }
 }

@@ -1,6 +1,8 @@
 package se.liu.noalj314.projekt;
 
-import java.security.MessageDigest;
+import java.security.*;
+import java.util.Base64;
+import java.security.spec.X509EncodedKeySpec;
 
 
 public class StringUtil {
@@ -18,4 +20,46 @@ public class StringUtil {
             throw new RuntimeException(e);
         }
     }
+        public static String getStringFromKey(java.security.Key key) {
+                return Base64.getEncoder().encodeToString(key.getEncoded());
+        }
+
+        public static PublicKey getPublicKeyfromString(String key) {
+            try {
+                    byte[] decodedKey = Base64.getDecoder().decode(key);
+                    X509EncodedKeySpec spec = new X509EncodedKeySpec(decodedKey);
+                    KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+                    return keyFactory.generatePublic(spec);
+            } catch (Exception e) {
+                    e.printStackTrace();
+                    return null;
+	    }
+	}
+
+        public static byte[] applyRSASig(PrivateKey privateKey, String input) {
+                Signature rsa;
+                byte[] output = new byte[0];
+                try {
+                        rsa = Signature.getInstance("SHA256withRSA"); // Använd RSA med SHA-256 för signering
+                        rsa.initSign(privateKey);
+                        byte[] strByte = input.getBytes();
+                        rsa.update(strByte);
+                        byte[] realSig = rsa.sign();
+                        output = realSig;
+                } catch (Exception e) {
+                        throw new RuntimeException(e);
+                }
+                return output;
+        }
+    public static boolean verifyRSASig(PublicKey publicKey, String data, byte[] signature) {
+        try {
+            Signature rsaVerify = Signature.getInstance("SHA256withRSA"); // Verifiera med RSA och SHA-256
+            rsaVerify.initVerify(publicKey);
+            rsaVerify.update(data.getBytes());
+            return rsaVerify.verify(signature);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
