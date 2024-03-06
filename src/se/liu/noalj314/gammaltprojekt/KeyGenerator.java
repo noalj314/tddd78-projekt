@@ -1,6 +1,6 @@
-package se.liu.noalj314.projekt;
+package se.liu.noalj314.gammaltprojekt;
 import java.security.*;
-import java.util.Base64;
+
 public class KeyGenerator
 {
     private PrivateKey privateKey;

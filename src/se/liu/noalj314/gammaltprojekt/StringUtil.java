@@ -1,6 +1,7 @@
-package se.liu.noalj314.projekt;
+package se.liu.noalj314.gammaltprojekt;
 
 import java.security.*;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Base64;
 import java.security.spec.X509EncodedKeySpec;
 
@@ -35,6 +36,17 @@ public class StringUtil {
                     return null;
 	    }
 	}
+    public static PrivateKey getPrivateKeyFromString(String key) {
+        try {
+            byte[] decodedKey = Base64.getDecoder().decode(key);
+            PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(decodedKey);
+            KeyFactory keyFactory = KeyFactory.getInstance("RSA");
+            return keyFactory.generatePrivate(spec);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 
         public static byte[] applyRSASig(PrivateKey privateKey, String input) {
                 Signature rsa;

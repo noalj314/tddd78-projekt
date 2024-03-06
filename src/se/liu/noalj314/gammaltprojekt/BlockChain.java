@@ -1,7 +1,5 @@
-package se.liu.noalj314.projekt;
+package se.liu.noalj314.gammaltprojekt;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class BlockChain {
@@ -10,7 +8,6 @@ public class BlockChain {
 
     public BlockChain() {
         this.difficulty = 4;
-	int minerReward = 100;
         this.blockChain = new ArrayList<Block>();
     }
 
@@ -53,14 +50,14 @@ public class BlockChain {
     public ArrayList<Block> getAllBlocks(){
         return blockChain;
     }
-    public float getBalanceForKey(PublicKey publicKey){
+    public float getBalanceForKey(String publicKey){
         float balance = 0;
         for (Block block: this.getAllBlocks()){
             for (Transaction transaction: block.getTransactions()) {
-                if (transaction.sender.equals(StringUtil.getStringFromKey(publicKey))) {
+                if (transaction.sender.equals(publicKey)) {
                     balance -= transaction.amount;
                 }
-                if (transaction.reciever.equals(StringUtil.getStringFromKey(publicKey))) {
+                if (transaction.reciever.equals(publicKey)) {
                     balance += transaction.amount;
                 }
             }
@@ -68,7 +65,7 @@ public class BlockChain {
         return balance;
     }
 
-    public void sendTransaction(PublicKey sender, PublicKey reciever, float amount, PrivateKey privateKey){
+    public void sendTransaction(String sender, String reciever, float amount, String privateKey){
         Transaction newTransaction = new Transaction(sender, reciever, amount);
         newTransaction.generateSignature(privateKey);
         // check if the transaction is valid and if the sender has enough money

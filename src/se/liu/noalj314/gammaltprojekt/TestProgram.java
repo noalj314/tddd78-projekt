@@ -1,35 +1,35 @@
-package se.liu.noalj314.projekt;
+package se.liu.noalj314.gammaltprojekt;
 import com.google.gson.GsonBuilder;
-import java.security.*;
+
 public class TestProgram {
     public static void main(String[] args) {
         BlockChain chain = new BlockChain();
         Wallet juliaWallet = new Wallet();
         Wallet noahWallet = new Wallet();
 
-        PublicKey juliaPublic = juliaWallet.getPublicKey();
-        PrivateKey juliaPrivate = juliaWallet.getPrivateKey();
-        PublicKey noahPublic = noahWallet.getPublicKey();
+        String juliaPublic = juliaWallet.getPublicKey();
+        String juliaPrivate = juliaWallet.getPrivateKey();
+        String noahPublic = noahWallet.getPublicKey();
+        System.out.println("Julias plånbok: " + juliaPublic);
 
-        juliaWallet.setBalance(1000);
-        noahWallet.setBalance(1000);
 
 
 
 
         // Skapa och mina genesis blocket
-        chain.sendTransaction(juliaPublic, noahPublic,100, juliaPrivate);
+        //chain.sendTransaction(juliaPublic, noahPublic,100, juliaPrivate);
         Block testBlock1 = new Block("test1");
-        testBlock1.mineBlock();
-        chain.sendTransaction(juliaPublic, noahPublic,100, juliaPrivate);
+        testBlock1.mineBlock(juliaPublic);
         chain.addBlock(testBlock1); // Lägg till det första blocket efter det är minat
+        chain.sendTransaction(juliaPublic, noahPublic,100, juliaPrivate);
+
 
         // Skapa och mine det andra blocket
-//        Block testBlock2 = new Block("test2");
+            Block testBlock2 = new Block("test2");
 //        chain.sendTransaction(juliaPublic, noahPublic,100, juliaPrivate);
 //        testBlock2.previousHash = testBlock1.getHash(); // Sätt previousHash korrekt
 //        testBlock2.mineBlock();
-//        chain.addBlock(testBlock2);
+            chain.addBlock(testBlock2);
 //
 //        Block testBlock3 = new Block("test3");
 //        chain.sendTransaction(noahPublic, juliaPublic,100, juliaPrivate);

@@ -1,6 +1,5 @@
-package se.liu.noalj314.projekt;
+package se.liu.noalj314.gammaltprojekt;
 
-import java.security.*;
 import java.util.Base64;
 public class Transaction
 {
@@ -10,9 +9,13 @@ public class Transaction
     private String signature = null; // innehåller en digital signatur för att verifiera att avsändaren har godkänt transaktionen
     private byte [] signatureBytes = null;
 
-    public Transaction(PublicKey sender, PublicKey reciever, float amount) {
-	this.sender = StringUtil.getStringFromKey(sender);
-	this.reciever = StringUtil.getStringFromKey(reciever);
+    public Transaction(String sender, String reciever, float amount) {
+	if (sender.equals("Miner Reward")) {
+	    this.sender = "Miner Reward";
+	} else {
+	    this.sender = sender;
+	}
+	this.reciever = reciever;
 	this.amount = amount;
     }
 
@@ -30,9 +33,9 @@ public class Transaction
 	this.signature = Base64.getEncoder().encodeToString(signature);
     }
 
-    public void generateSignature(PrivateKey privateKey) {
+    public void generateSignature(String privateKey) {
 	String data = sender + reciever + Float.toString(amount);
-	byte[] signatureBytes = StringUtil.applyRSASig(privateKey, data);
+	byte[] signatureBytes = StringUtil.applyRSASig(StringUtil.getPrivateKeyFromString(privateKey), data);
 	this.signature = Base64.getEncoder().encodeToString(signatureBytes);
     }
     public boolean verifySignature() {
@@ -41,7 +44,7 @@ public class Transaction
 	return StringUtil.verifyRSASig(StringUtil.getPublicKeyfromString(sender), data, signatureBytes);
     }
     public boolean isTransactionValid() {
-	if (verifySignature()) {
+	if (sender.equals("Miner Reward") || verifySignature()) {
 	    System.out.println("Transaktionen är giltig.");
 	    return true;
 	} else {

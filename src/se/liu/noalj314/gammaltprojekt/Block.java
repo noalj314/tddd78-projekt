@@ -1,7 +1,5 @@
-package se.liu.noalj314.projekt;
+package se.liu.noalj314.gammaltprojekt;
 
-import java.security.PrivateKey;
-import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -11,7 +9,8 @@ public class Block {
     private final String data;
     private final long timeStamp;
     private int nonce;
-    private static int difficulty = 4;
+    private int difficulty = 4;
+    private int MINERREWARD = 100;
     private ArrayList<Transaction> transactions = new ArrayList<Transaction>(); // våra transaktioner
     public Block(String data) {
         this.data = data;
@@ -19,18 +18,18 @@ public class Block {
         this.hash = newBlockHash();
         this.nonce = 0;
     }
-
+    public ArrayList<Transaction> getTransactions() {
+        return transactions;
+    }
+    public String getHash() {
+        return hash;
+    }
     public String newBlockHash(){
         String correctHash = StringUtil.sha256(
                 previousHash + timeStamp + nonce + data);
         return correctHash;
     }
-
-    public String getHash() {
-        return hash;
-    }
-
-    public void mineBlock(){
+    public void mineBlock(String miner){
         String target = new String(new char[difficulty]).replace('\0', '0'); // Skapa en sträng med 'difficulty' antal nollor
         while(!hash.substring(0, difficulty).equals(target)){
             nonce ++;
@@ -38,9 +37,11 @@ public class Block {
             System.out.println("Nonce: " + nonce + "\n" + "Hash Attempted: " + hash);
         }
         System.out.println("Block Mined! Nonce to solve: " + nonce);
+        payMiner(miner);
     }
 
-    public ArrayList<Transaction> getTransactions() {
-        return transactions;
+    public void payMiner(String miner) {
+        Transaction minerTransaction = new Transaction("Miner Reward", miner, MINERREWARD);
+        transactions.add(minerTransaction);
     }
 }
