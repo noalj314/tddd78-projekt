@@ -1,19 +1,21 @@
 package se.liu.noalj314.constants;
 
-import se.liu.noalj314.enemies.Enemy;
-import se.liu.noalj314.enemies.EnemyType;
+import se.liu.noalj314.objects.enemies.EnemyType;
 
 public class Constants
 {
+
+    public static final int PIXELSIZE = 32;
+
     public static class Enemies
     {
         public static int getReward(EnemyType enemyType) {
             switch (enemyType) {
                 case BAT:
                     return 5;
-                case ORC:
+                case HUMANOID:
                     return 15;
-                case GOBLIN:
+                case BEAR:
                     return 10;
             }
             return 0;
@@ -23,9 +25,9 @@ public class Constants
             switch (enemyType) {
                 case BAT:
                     return 0.8f;
-                case ORC:
+                case HUMANOID:
                     return 0.5f;
-                case GOBLIN:
+                case BEAR:
                     return 0.65f;
             }
             return 0;
@@ -34,9 +36,9 @@ public class Constants
             switch (enemyType) {
                 case BAT:
                     return 50;
-                case ORC:
+                case BEAR:
                     return 75;
-                case GOBLIN:
+                case HUMANOID:
                     return 100;
             }
             return 0;

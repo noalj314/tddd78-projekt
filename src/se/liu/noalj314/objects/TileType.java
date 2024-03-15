@@ -1,4 +1,4 @@
-package se.liu.noalj314.projekt;
+package se.liu.noalj314.objects;
 
 public enum TileType
 {
