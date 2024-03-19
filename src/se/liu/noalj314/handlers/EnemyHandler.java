@@ -1,6 +1,7 @@
 package se.liu.noalj314.handlers;
 
 import se.liu.noalj314.Screens.PlayingScreen;
+import se.liu.noalj314.constants.Constants;
 import se.liu.noalj314.constants.LoadImage;
 import se.liu.noalj314.objects.enemies.Direction;
 import se.liu.noalj314.objects.enemies.Enemy;
@@ -14,27 +15,29 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
+import static se.liu.noalj314.constants.Constants.AMOUNTOFTILES;
+import static se.liu.noalj314.constants.Constants.Enemies.getSpeed;
 import static se.liu.noalj314.constants.Constants.PIXELSIZE;
 import static se.liu.noalj314.objects.enemies.Direction.UP;
+import static se.liu.noalj314.projekt.MapMaker.endX;
+import static se.liu.noalj314.projekt.MapMaker.endY;
+import static se.liu.noalj314.projekt.MapMaker.startX;
+import static se.liu.noalj314.projekt.MapMaker.startY;
 
 public class EnemyHandler
 {
     private final PlayingScreen playingScreen;
-    private BufferedImage[] images;
     private Enemy test;
     private ArrayList<Enemy> enemies = new ArrayList<>();
-    private float speed = 3f;
     private Game game;
 
     public EnemyHandler(PlayingScreen playingScreen, Game game) {
 	this.playingScreen = playingScreen;
-	this.images = new BufferedImage[3];
 	this.game = game;
-	//addEnemy(EnemyType.RAT);
+	addEnemy(EnemyType.BEAR);
+	addEnemy(EnemyType.RAT);
+	addEnemy(EnemyType.HUMANOID);
 	addEnemy(EnemyType.BAT);
-
-
-	//enemies.add(new Enemy(PIXELSIZE * 3, PIXELSIZE*7, EnemyType.BAT, 0));
     }
 
     public void update() {
@@ -44,21 +47,21 @@ public class EnemyHandler
     }
 
     private void moveEnemy(Enemy enemy) {
-	System.out.println(noMoreMap(enemy));
 	if (enemy.getLastDirection() == Direction.FIRST)
 	    changeDirection(enemy);
-	int newX = (int) (enemy.getX() + getSpeedX(enemy.getLastDirection()));
-	int newY = (int) (enemy.getY() + getSpeedY(enemy.getLastDirection()));
+	int newX = (int) (enemy.getX() + getSpeedX(enemy.getLastDirection(), enemy));
+	int newY = (int) (enemy.getY() + getSpeedY(enemy.getLastDirection(), enemy));
 	if (game.getTileTypeAt(newX, newY).equals(TileType.ROAD)) {
-	    enemy.move(speed, enemy.getLastDirection());
+	    enemy.move(getSpeed(enemy.getEnemyType()), enemy.getLastDirection());
 	} else {
 	    changeDirection(enemy);
 	}
     }
 
     private boolean noMoreMap( Enemy enemy) {
-	Point enemysTotalPos = new Point((int)enemy.getX() / PIXELSIZE, (int)enemy.getY() / PIXELSIZE);
-	if(enemysTotalPos.equals(MapMaker.end))
+	float enemysTotalPosX = enemy.getX() / PIXELSIZE;
+	float enemysTotalPosY = enemy.getY() / PIXELSIZE;
+	if(enemysTotalPosX == endX && enemysTotalPosY ==endY)
 		return true;
 	return false;
     }
@@ -75,47 +78,47 @@ public class EnemyHandler
 	    return;
 
 	if (direction.equals(Direction.LEFT) || direction.equals(Direction.RIGHT)) {
-	    float newY = (enemy.getY() + getSpeedY(Direction.DOWN));
+	    float newY = (enemy.getY() + getSpeedY(Direction.DOWN, enemy));
 	    if (game.getTileTypeAt(enemy.getX(), newY).equals(TileType.ROAD))
-		enemy.move(speed, Direction.DOWN);
+		enemy.move(getSpeed(enemy.getEnemyType()), Direction.DOWN);
 	    else
-		enemy.move(speed, Direction.UP);
+		enemy.move(getSpeed(enemy.getEnemyType()), Direction.UP);
 	} else {
-	    float newX = (enemy.getX() + getSpeedX(Direction.LEFT));
+	    float newX = (enemy.getX() + getSpeedX(Direction.LEFT, enemy));
 	    if (game.getTileTypeAt(newX, enemy.getY()).equals(TileType.ROAD))
-		enemy.move(speed, Direction.LEFT);
+		enemy.move(getSpeed(enemy.getEnemyType()), Direction.LEFT);
 	    else
-		enemy.move(speed, Direction.RIGHT);
+		enemy.move(getSpeed(enemy.getEnemyType()), Direction.RIGHT);
 	}
     }
 
     private void enemyDimensionFix(Enemy enemy, Direction direction, int xTile, int yTile) {
 	switch (direction) {
 	    case RIGHT -> {
-		if (xTile < 19)
+		if (xTile < AMOUNTOFTILES -  1)
 		    xTile++;
 	    }
 	    case DOWN -> {
-		if (yTile < 19)
+		if (yTile < AMOUNTOFTILES - 1)
 		    yTile++;
 	    }
 	}
 	enemy.setPosition(xTile * PIXELSIZE, yTile * PIXELSIZE);
     }
 
-    public float getSpeedY(Direction dir) {
+    public float getSpeedY(Direction dir, Enemy enemy) {
 	if (dir.equals(UP))
-	    return -speed;
+	    return -getSpeed(enemy.getEnemyType());
 	else if (dir.equals(Direction.DOWN))
-	    return speed + PIXELSIZE;
+	    return getSpeed(enemy.getEnemyType()) + PIXELSIZE;
 	return 0;
     }
 
-    public float getSpeedX(Direction dir) {
+    public float getSpeedX(Direction dir, Enemy enemy) {
 	if (dir.equals(Direction.LEFT))
-	    return -speed;
+	    return -getSpeed(enemy.getEnemyType());
 	else if (dir.equals(Direction.RIGHT))
-	    return speed + PIXELSIZE;
+	    return getSpeed(enemy.getEnemyType()) + PIXELSIZE;
 	return 0;
     }
 
@@ -147,8 +150,8 @@ public class EnemyHandler
     }
 
     private void addEnemy(EnemyType enemyType) {
-	int xTile = MapMaker.start.x * PIXELSIZE * 2; //no idea why it needs to be multipled by 2 but it works
-	int yTile = MapMaker.start.y * PIXELSIZE * 2; //no idea why it needs to be multipled by 2 but it works
+	float xTile = startX; //no idea why it needs to be multipled by 2 but it works
+	float yTile = startY; //no idea why it needs to be multipled by 2 but it works
 
 	switch (enemyType) {
 	    case BAT -> enemies.add(new Bat(xTile, yTile, 0));

@@ -11,20 +11,20 @@ import se.liu.noalj314.projekt.GameStatus;
 
 public class KeyboardListener implements KeyListener
 {
+    private Game game;
+    public KeyboardListener(Game game){
+        this.game =game;
+    }
     @Override public void keyTyped(final KeyEvent e) {
     }
 
     @Override public void keyPressed(final KeyEvent e) {
-        if (e.getKeyCode() == KeyEvent.VK_P) {
-            System.out.println("play");
-            GameStatus.gameStatus = PLAYING;
-            System.out.println(gameStatus);
-        } else if (e.getKeyCode() == KeyEvent.VK_M) {
-            GameStatus.gameStatus = MENU;
-            System.out.println("menu");
-        } else if (e.getKeyCode() == KeyEvent.VK_S) {
-            GameStatus.gameStatus = OPTIONS;
-            System.out.println("menu");
+        switch (GameStatus.gameStatus) {
+            case PLAYING:
+                game.getPlayingScreen().keyPressed(e);
+                break;
+            default:
+                break;
         }
     }
 

@@ -1,4 +1,4 @@
-package se.liu.noalj314.objects;
+package se.liu.noalj314.objects.towers;
 
 public enum TowerType
 {

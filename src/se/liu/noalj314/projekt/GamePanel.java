@@ -8,6 +8,9 @@ import se.liu.noalj314.Listeners.KeyboardListener;
 import se.liu.noalj314.Listeners.MouseListener;
 import se.liu.noalj314.constants.LoadImage;
 
+import static se.liu.noalj314.constants.Constants.DIMENSIONX;
+import static se.liu.noalj314.constants.Constants.DIMENSIONY;
+
 public class GamePanel extends JPanel
 {
     private KeyboardListener keyboardListener;
@@ -17,7 +20,7 @@ public class GamePanel extends JPanel
         this.game = game;
     }
     public void initKeyAndMouse(){
-        keyboardListener = new KeyboardListener();
+        keyboardListener = new KeyboardListener(game);
         mouseListener = new MouseListener(game);
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
@@ -30,6 +33,6 @@ public class GamePanel extends JPanel
     }
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(640,640);
+        return new Dimension(DIMENSIONX, DIMENSIONY);
     }
 }

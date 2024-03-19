@@ -26,7 +26,7 @@ public abstract class Enemy
             case RIGHT -> this.x += speed;
         }
     }
-    private void setStartingHealth(){
+    protected void setStartingHealth(){
         health = se.liu.noalj314.constants.Constants.Enemies.getStartHealth(enemyType);
     }
     public void decreaseHealth(int damage){

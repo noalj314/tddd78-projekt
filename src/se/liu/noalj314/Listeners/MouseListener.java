@@ -14,10 +14,9 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
     }
     @Override public void mouseClicked(final MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-
             switch (GameStatus.gameStatus) {
-                case MENU:
-                    game.getMenu().mouseClick(e.getPoint());
+                case PLAYING -> game.getPlayingScreen().mouseClick(e.getPoint());
+                case MENU -> game.getMenu().mouseClick(e.getPoint());
             }
         }
     }
@@ -43,6 +42,12 @@ public class MouseListener implements java.awt.event.MouseListener, MouseMotionL
     }
 
     @Override public void mouseMoved(final MouseEvent e) {
-
+        switch (GameStatus.gameStatus) {
+            case PLAYING:
+                game.getPlayingScreen().mouseMove(e.getPoint());
+                break;
+            default:
+                break;
+        }
     }
 }
