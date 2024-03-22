@@ -7,11 +7,13 @@ import se.liu.noalj314.projekt.GameStatus;
 
 import java.awt.*;
 
+import static se.liu.noalj314.constants.Constants.DIMENSIONX;
+import static se.liu.noalj314.constants.Constants.DIMENSIONY;
 import static se.liu.noalj314.constants.Constants.PIXELSIZE;
 
 public class Menu extends GameScreen implements Methods
 {
-    private Button start, options, quit;
+    private Button start, quit;
 
     public Menu(final Game game) {
 	super(game);
@@ -19,28 +21,24 @@ public class Menu extends GameScreen implements Methods
     }
 
     private void createButtons() {
-	int w = 640 / 4;
+	int w = DIMENSIONX / 4;
 	int h = w / 4;
-	int x = 640 / 2 - w / 2;
-	int y = 640 / 6;
-	int yMargin = 640 / 8;
+	int x = DIMENSIONX / 2 - w / 2;
+	int y = DIMENSIONY / 6;
+	int yMargin = DIMENSIONY / 8;
 
 	start = new Button(x, y, w, h, "Start");
-	options = new Button(x, y + yMargin, w, h, "Options");
 	quit = new Button(x, y + 2* yMargin, w, h, "Quit");
     }
     private void renderButtons(Graphics g){
 	start.render(g);
-	options.render(g);
 	quit.render(g);
     }
 
     @Override public void mouseClick(Point point) {
 	if(start.getBorder().contains(point)) {
 	    GameStatus.gameStatus = GameStatus.PLAYING;
-	} else if(options.getBorder().contains(point)) {
-	    GameStatus.gameStatus = GameStatus.OPTIONS;
-	}  else if(quit.getBorder().contains(point)) {
+	}   else if(quit.getBorder().contains(point)) {
 	    System.exit(0);
 	}
     }
@@ -51,5 +49,10 @@ public class Menu extends GameScreen implements Methods
 
     @Override public void render(final Graphics g) {
 	renderButtons(g);
+	renderInfoText(g);
+    }
+
+    private void renderInfoText(final Graphics g) {
+	g.drawString("Controls are: 1,2,3 for tower selection, escape to deselect tower",(int)(DIMENSIONX*0.2), (int)(DIMENSIONY *0.6));
     }
 }

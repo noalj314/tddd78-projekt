@@ -2,6 +2,6 @@ package se.liu.noalj314.projekt;
 
 public enum GameStatus
 {
-    MENU, OPTIONS, PLAYING;
+    MENU, PLAYING;
     public static GameStatus gameStatus = MENU;
 }

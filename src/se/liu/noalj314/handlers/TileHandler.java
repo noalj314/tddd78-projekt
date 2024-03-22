@@ -10,15 +10,6 @@ import java.util.ArrayList;
 public class TileHandler
 {
     public ArrayList<Tile> tiles = new ArrayList<Tile>();
-    public TileHandler(){
-	createTiles();
-    }
-
-    private void createTiles() {
-	tiles.add(new Tile(TileType.GRASS, LoadImage.grass));
-	tiles.add(new Tile(TileType.WATER, LoadImage.water));
-	tiles.add(new Tile(TileType.ROAD, LoadImage.road));
-    }
     public BufferedImage getImage(TileType tileType) {
 	switch (tileType) {
 	    case GRASS:

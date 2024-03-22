@@ -13,16 +13,13 @@ public class Render
     }
 
     public void drawGameState(Graphics g) {
-    switch (GameStatus.gameStatus) {
-	case MENU:
-	    game.getMenu().render(g);
-	    break;
-	case PLAYING:
-	    game.getPlayingScreen().render(g);
-	    break;
-	case OPTIONS:
-	    game.getSettings().render(g);
-	    break;
-    	}
+	switch (GameStatus.gameStatus) {
+	    case MENU:
+		game.getMenu().render(g);
+		break;
+	    case PLAYING:
+		game.getPlayingScreen().render(g);
+		break;
+	}
     }
 }

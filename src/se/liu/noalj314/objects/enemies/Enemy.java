@@ -1,5 +1,10 @@
 package se.liu.noalj314.objects.enemies;
 
+import se.liu.noalj314.constants.Constants;
+import se.liu.noalj314.handlers.EnemyHandler;
+
+import java.util.ArrayList;
+
 public abstract class Enemy
 {
     protected int health, speed;
@@ -7,18 +12,26 @@ public abstract class Enemy
     public Float y;
     protected boolean alive = true;
     protected EnemyType enemyType;
-    private int id;
     private Direction lastDirection;
+    protected EnemyHandler enemyHandler;
+    protected int freezeTickLimit = Constants.FREEZETICKLIMIT;
+    protected int freezeTick = freezeTickLimit;
+    private float freezeSpeed;
 
-    public Enemy(float x, float y, EnemyType enemyType, int id) {
+    protected Enemy(float x, float y, EnemyType enemyType, EnemyHandler enemyHandler) {
         this.x = x;
         this.y = y;
         this.enemyType = enemyType;
-        this.id = id;
         lastDirection = Direction.FIRST;
+        health = Constants.Enemies.getStartHealth(enemyType);
+        this.enemyHandler = enemyHandler;
     }
     public void move(float speed, Direction direction){
         lastDirection = direction;
+        if (freezeTick < freezeTickLimit) {
+            freezeTick++;
+            speed  *= freezeSpeed;
+        }
         switch (direction) {
             case UP -> this.y -= speed ;
             case DOWN -> this.y += speed;
@@ -26,17 +39,20 @@ public abstract class Enemy
             case RIGHT -> this.x += speed;
         }
     }
-    protected void setStartingHealth(){
-        health = se.liu.noalj314.constants.Constants.Enemies.getStartHealth(enemyType);
-    }
+
     public void decreaseHealth(int damage){
         health -= damage;
-        kill(); // kill enemy if health is less than zero
+        tryToKill(); // kill enemy if health is less than zero
     }
-    public void kill(){
-        if (health <= 0)
+    public void decreaseSpeed(float freezeSpeed) {
+        this.freezeSpeed = freezeSpeed;
+        freezeTick = 0;
+    }
+    public void tryToKill(){
+        if (health <= 0 && alive) {
             alive = false;
-            //lägg till reward player här
+            enemyHandler.payPlayer(enemyType);
+        }
     }
     public float getX(){
         return x;
@@ -60,5 +76,16 @@ public abstract class Enemy
     }
     public EnemyType getEnemyType(){
         return enemyType;
+    }
+    public float getHealth(){
+        return health;
+    }
+
+    public void kill() {
+        this.health = 0;
+        this.alive = false;
+    }
+    public boolean isFreezed(){
+        return freezeTick < freezeTickLimit;
     }
 }

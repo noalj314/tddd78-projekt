@@ -6,6 +6,7 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
 
+import static se.liu.noalj314.constants.Constants.BULLETSIZE;
 import static se.liu.noalj314.constants.Constants.PIXELSIZE;
 
 public class LoadImage
@@ -15,10 +16,8 @@ public class LoadImage
     public static BufferedImage water;
     public static BufferedImage bat, rat, bear, humanoid;
     public static BufferedImage mage, hunter, artillery;
-
-
-
-
+    public static BufferedImage arrow, icebolt, shell;
+    public static BufferedImage explosion, freeze;
 
 
     public static void loadImages(){
@@ -32,6 +31,12 @@ public class LoadImage
 	InputStream mageimg = LoadImage.class.getResourceAsStream("/images/mage.png");
 	InputStream artilleryimg = LoadImage.class.getResourceAsStream("/images/artillery.png");
 	InputStream hunterimg = LoadImage.class.getResourceAsStream("/images/hunter.png");
+	InputStream arrowimg = LoadImage.class.getResourceAsStream("/images/arrow.png");
+	InputStream shellimg = LoadImage.class.getResourceAsStream("/images/shell.png");
+	InputStream iceboltimg = LoadImage.class.getResourceAsStream("/images/ice.png");
+	InputStream explosionimg = LoadImage.class.getResourceAsStream("/images/explosion.png");
+	InputStream freezeimg = LoadImage.class.getResourceAsStream("/images/freeze.png");
+
 
 	try {
 	    grass = ImageIO.read(grassimg);
@@ -44,6 +49,11 @@ public class LoadImage
 	    mage = ImageIO.read(mageimg);
 	    artillery = ImageIO.read(artilleryimg);
 	    hunter = ImageIO.read(hunterimg);
+	    arrow = ImageIO.read(arrowimg);
+	    shell = ImageIO.read(shellimg);
+	    icebolt = ImageIO.read(iceboltimg);
+	    explosion = ImageIO.read(explosionimg);
+	    freeze = ImageIO.read(freezeimg);
 	} catch (IOException e) {
 	    throw new RuntimeException(e);
 	}
@@ -57,6 +67,11 @@ public class LoadImage
 	mage = scaleImage(mage, PIXELSIZE, PIXELSIZE);
 	artillery = scaleImage(artillery, PIXELSIZE, PIXELSIZE);
 	hunter = scaleImage(hunter, PIXELSIZE, PIXELSIZE);
+	arrow = scaleImage(arrow, BULLETSIZE, BULLETSIZE);
+	icebolt = scaleImage(icebolt, BULLETSIZE, BULLETSIZE);
+	shell = scaleImage(shell, BULLETSIZE, BULLETSIZE);
+	explosion = scaleImage(explosion, PIXELSIZE, PIXELSIZE);
+	freeze = scaleImage(freeze, PIXELSIZE, PIXELSIZE);
     }
 	private static BufferedImage scaleImage(BufferedImage source, int width, int height) {
 	    Image tmp = source.getScaledInstance(width, height, Image.SCALE_SMOOTH);

@@ -8,8 +8,6 @@ import se.liu.noalj314.objects.enemies.Enemy;
 import se.liu.noalj314.objects.enemies.EnemyType;
 import se.liu.noalj314.objects.enemies.*;
 import se.liu.noalj314.objects.TileType;
-import se.liu.noalj314.projekt.Game;
-import se.liu.noalj314.projekt.MapMaker;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 
 import static se.liu.noalj314.constants.Constants.AMOUNTOFTILES;
 import static se.liu.noalj314.constants.Constants.Enemies.getSpeed;
+import static se.liu.noalj314.constants.Constants.Enemies.getStartHealth;
 import static se.liu.noalj314.constants.Constants.PIXELSIZE;
 import static se.liu.noalj314.objects.enemies.Direction.UP;
 import static se.liu.noalj314.projekt.MapMaker.endX;
@@ -29,21 +28,29 @@ public class EnemyHandler
     private final PlayingScreen playingScreen;
     private Enemy test;
     private ArrayList<Enemy> enemies = new ArrayList<>();
-    private Game game;
 
-    public EnemyHandler(PlayingScreen playingScreen, Game game) {
+    public EnemyHandler(PlayingScreen playingScreen) {
 	this.playingScreen = playingScreen;
-	this.game = game;
-	addEnemy(EnemyType.BEAR);
-	addEnemy(EnemyType.RAT);
-	addEnemy(EnemyType.HUMANOID);
-	addEnemy(EnemyType.BAT);
     }
 
     public void update() {
+	if (timeForSpawn()){
+	    spawnEnemy();
+	}
 	for (Enemy enemy : enemies) {
 	    moveEnemy(enemy);
 	}
+    }
+
+    private void spawnEnemy() {
+	addEnemy(playingScreen.getWaveHandler().getNextEnemy());
+    }
+
+    public boolean timeForSpawn(){
+	if (playingScreen.getWaveHandler().timeForSpawn() && playingScreen.getWaveHandler().enemiesLeftToSpawn()){
+		return true;
+	}
+	return false;
     }
 
     private void moveEnemy(Enemy enemy) {
@@ -51,7 +58,7 @@ public class EnemyHandler
 	    changeDirection(enemy);
 	int newX = (int) (enemy.getX() + getSpeedX(enemy.getLastDirection(), enemy));
 	int newY = (int) (enemy.getY() + getSpeedY(enemy.getLastDirection(), enemy));
-	if (game.getTileTypeAt(newX, newY).equals(TileType.ROAD)) {
+	if (playingScreen.getGame().getTileTypeAt(newX, newY).equals(TileType.ROAD)) {
 	    enemy.move(getSpeed(enemy.getEnemyType()), enemy.getLastDirection());
 	} else {
 	    changeDirection(enemy);
@@ -74,18 +81,19 @@ public class EnemyHandler
 	int yTile = (int) (enemy.getY() / PIXELSIZE);
 
 	enemyDimensionFix(enemy, direction, xTile, yTile);
-	if (noMoreMap(enemy))
-	    return;
-
+	if (noMoreMap(enemy) && enemy.isAlive()) {
+	    enemy.kill();
+	    playingScreen.decreaseHP();
+	}
 	if (direction.equals(Direction.LEFT) || direction.equals(Direction.RIGHT)) {
 	    float newY = (enemy.getY() + getSpeedY(Direction.DOWN, enemy));
-	    if (game.getTileTypeAt(enemy.getX(), newY).equals(TileType.ROAD))
+	    if (playingScreen.getGame().getTileTypeAt(enemy.getX(), newY).equals(TileType.ROAD))
 		enemy.move(getSpeed(enemy.getEnemyType()), Direction.DOWN);
 	    else
 		enemy.move(getSpeed(enemy.getEnemyType()), Direction.UP);
 	} else {
 	    float newX = (enemy.getX() + getSpeedX(Direction.LEFT, enemy));
-	    if (game.getTileTypeAt(newX, enemy.getY()).equals(TileType.ROAD))
+	    if (playingScreen.getGame().getTileTypeAt(newX, enemy.getY()).equals(TileType.ROAD))
 		enemy.move(getSpeed(enemy.getEnemyType()), Direction.LEFT);
 	    else
 		enemy.move(getSpeed(enemy.getEnemyType()), Direction.RIGHT);
@@ -123,8 +131,27 @@ public class EnemyHandler
     }
 
     public void render(Graphics g) {
-	for (Enemy enemy : enemies)
-	    renderEnemy(enemy, g);
+	for (Enemy enemy : enemies) {
+	    if (enemy.isAlive()) {
+		renderHealthBar(g, enemy);
+		renderEnemy(enemy, g);
+		renderFreeze(enemy, g);
+	    }
+	}
+    }
+
+    private void renderFreeze( Enemy enemy,  Graphics g) {
+	if (enemy.isFreezed()){
+		g.drawImage(LoadImage.freeze, (int) enemy.getX(), (int)enemy.getY(), null);
+	}
+    }
+
+    private void renderHealthBar(Graphics g, Enemy enemy) {
+	g.setColor(Color.RED);
+	g.fillRect((int)enemy.getX() , (int)enemy.getY() - 8, calculateWidthHPBar(enemy), PIXELSIZE/10);
+    }
+    private int calculateWidthHPBar(Enemy enemy){
+	return (int) (PIXELSIZE * enemy.getHealth() / getStartHealth(enemy.getEnemyType()));
     }
 
     private void renderEnemy(Enemy enemy, Graphics g) {
@@ -154,10 +181,17 @@ public class EnemyHandler
 	float yTile = startY; //no idea why it needs to be multipled by 2 but it works
 
 	switch (enemyType) {
-	    case BAT -> enemies.add(new Bat(xTile, yTile, 0));
-	    case RAT -> enemies.add(new Rat(xTile, yTile, 0));
-	    case BEAR -> enemies.add(new Bear(xTile, yTile, 0));
-	    case HUMANOID -> enemies.add(new Humanoid(xTile, yTile, 0));
+	    case BAT -> enemies.add(new Bat(xTile, yTile, this));
+	    case RAT -> enemies.add(new Rat(xTile, yTile, this));
+	    case BEAR -> enemies.add(new Bear(xTile, yTile, this));
+	    case HUMANOID -> enemies.add(new Humanoid(xTile, yTile, this));
 	}
+    }
+    public ArrayList<Enemy> getEnemies(){
+	return enemies;
+    }
+
+    public void payPlayer(EnemyType enemyType) {
+	playingScreen.setCoins(playingScreen.getCoins() + Constants.Enemies.getReward(enemyType));
     }
 }
