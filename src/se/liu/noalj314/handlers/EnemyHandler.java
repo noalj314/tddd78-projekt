@@ -1,6 +1,6 @@
 package se.liu.noalj314.handlers;
 
-import se.liu.noalj314.Screens.PlayingScreen;
+import se.liu.noalj314.screens.PlayingScreen;
 import se.liu.noalj314.constants.Constants;
 import se.liu.noalj314.constants.LoadImage;
 import se.liu.noalj314.objects.enemies.Direction;
@@ -16,12 +16,12 @@ import java.util.ArrayList;
 import static se.liu.noalj314.constants.Constants.AMOUNTOFTILES;
 import static se.liu.noalj314.constants.Constants.Enemies.getSpeed;
 import static se.liu.noalj314.constants.Constants.Enemies.getStartHealth;
-import static se.liu.noalj314.constants.Constants.PIXELSIZE;
+import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 import static se.liu.noalj314.objects.enemies.Direction.UP;
-import static se.liu.noalj314.projekt.MapMaker.endX;
-import static se.liu.noalj314.projekt.MapMaker.endY;
-import static se.liu.noalj314.projekt.MapMaker.startX;
-import static se.liu.noalj314.projekt.MapMaker.startY;
+import static se.liu.noalj314.projekt.MapMaker.END_X;
+import static se.liu.noalj314.projekt.MapMaker.END_Y;
+import static se.liu.noalj314.projekt.MapMaker.START_X;
+import static se.liu.noalj314.projekt.MapMaker.START_Y;
 
 public class EnemyHandler
 {
@@ -66,9 +66,9 @@ public class EnemyHandler
     }
 
     private boolean noMoreMap( Enemy enemy) {
-	float enemysTotalPosX = enemy.getX() / PIXELSIZE;
-	float enemysTotalPosY = enemy.getY() / PIXELSIZE;
-	if(enemysTotalPosX == endX && enemysTotalPosY ==endY)
+	float enemysTotalPosX = enemy.getX() / PIXEL_SIZE;
+	float enemysTotalPosY = enemy.getY() / PIXEL_SIZE;
+	if(enemysTotalPosX == END_X && enemysTotalPosY == END_Y)
 		return true;
 	return false;
     }
@@ -77,13 +77,13 @@ public class EnemyHandler
     private void changeDirection(Enemy enemy) {
 	Direction direction = enemy.getLastDirection();
 
-	int xTile = (int) (enemy.getX() / PIXELSIZE);
-	int yTile = (int) (enemy.getY() / PIXELSIZE);
+	int xTile = (int) (enemy.getX() / PIXEL_SIZE);
+	int yTile = (int) (enemy.getY() / PIXEL_SIZE);
 
 	enemyDimensionFix(enemy, direction, xTile, yTile);
 	if (noMoreMap(enemy) && enemy.isAlive()) {
 	    enemy.kill();
-	    playingScreen.decreaseHP();
+	    playingScreen.getGameState().decreaseHp();
 	}
 	if (direction.equals(Direction.LEFT) || direction.equals(Direction.RIGHT)) {
 	    float newY = (enemy.getY() + getSpeedY(Direction.DOWN, enemy));
@@ -111,14 +111,14 @@ public class EnemyHandler
 		    yTile++;
 	    }
 	}
-	enemy.setPosition(xTile * PIXELSIZE, yTile * PIXELSIZE);
+	enemy.setPosition(xTile * PIXEL_SIZE, yTile * PIXEL_SIZE);
     }
 
     public float getSpeedY(Direction dir, Enemy enemy) {
 	if (dir.equals(UP))
 	    return -getSpeed(enemy.getEnemyType());
 	else if (dir.equals(Direction.DOWN))
-	    return getSpeed(enemy.getEnemyType()) + PIXELSIZE;
+	    return getSpeed(enemy.getEnemyType()) + PIXEL_SIZE;
 	return 0;
     }
 
@@ -126,7 +126,7 @@ public class EnemyHandler
 	if (dir.equals(Direction.LEFT))
 	    return -getSpeed(enemy.getEnemyType());
 	else if (dir.equals(Direction.RIGHT))
-	    return getSpeed(enemy.getEnemyType()) + PIXELSIZE;
+	    return getSpeed(enemy.getEnemyType()) + PIXEL_SIZE;
 	return 0;
     }
 
@@ -148,10 +148,10 @@ public class EnemyHandler
 
     private void renderHealthBar(Graphics g, Enemy enemy) {
 	g.setColor(Color.RED);
-	g.fillRect((int)enemy.getX() , (int)enemy.getY() - 8, calculateWidthHPBar(enemy), PIXELSIZE/10);
+	g.fillRect((int)enemy.getX() , (int)enemy.getY() - 8, calculateWidthHPBar(enemy), PIXEL_SIZE / 10);
     }
     private int calculateWidthHPBar(Enemy enemy){
-	return (int) (PIXELSIZE * enemy.getHealth() / getStartHealth(enemy.getEnemyType()));
+	return (int) (PIXEL_SIZE * enemy.getHealth() / getStartHealth(enemy.getEnemyType()));
     }
 
     private void renderEnemy(Enemy enemy, Graphics g) {
@@ -177,8 +177,8 @@ public class EnemyHandler
     }
 
     private void addEnemy(EnemyType enemyType) {
-	float xTile = startX; //no idea why it needs to be multipled by 2 but it works
-	float yTile = startY; //no idea why it needs to be multipled by 2 but it works
+	float xTile = START_X; //no idea why it needs to be multipled by 2 but it works
+	float yTile = START_Y; //no idea why it needs to be multipled by 2 but it works
 
 	switch (enemyType) {
 	    case BAT -> enemies.add(new Bat(xTile, yTile, this));
@@ -192,6 +192,6 @@ public class EnemyHandler
     }
 
     public void payPlayer(EnemyType enemyType) {
-	playingScreen.setCoins(playingScreen.getCoins() + Constants.Enemies.getReward(enemyType));
+	playingScreen.getGameState().setCoins(playingScreen.getGameState().getCoins() + Constants.Enemies.getReward(enemyType));
     }
 }

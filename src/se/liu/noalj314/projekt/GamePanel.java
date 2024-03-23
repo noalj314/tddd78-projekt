@@ -1,27 +1,25 @@
 package se.liu.noalj314.projekt;
-
-import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
-import se.liu.noalj314.Listeners.KeyboardListener;
-import se.liu.noalj314.Listeners.MouseListener;
-import se.liu.noalj314.constants.LoadImage;
-
+import java.awt.Graphics;
+import java.awt.Dimension;
+import se.liu.noalj314.listeners.KeyboardListener;
+import se.liu.noalj314.listeners.MouseListener;
+import javax.swing.JPanel;
 import static se.liu.noalj314.constants.Constants.DIMENSIONX;
 import static se.liu.noalj314.constants.Constants.DIMENSIONY;
 
+/**
+ * The GamePanel class extends JPanel and represents the main game panel in the game.
+ * It handles keyboard and mouse inputs and manages the rendering of the game state.
+ */
 public class GamePanel extends JPanel
 {
-    private KeyboardListener keyboardListener;
-    private MouseListener mouseListener;
     private Game game;
     public GamePanel(Game game){
         this.game = game;
     }
     public void initKeyAndMouse(){
-        keyboardListener = new KeyboardListener(game);
-        mouseListener = new MouseListener(game);
+	KeyboardListener keyboardListener = new KeyboardListener(game);
+	MouseListener mouseListener = new MouseListener(game);
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
         addKeyListener(keyboardListener);

@@ -1,4 +1,4 @@
-package se.liu.noalj314.Listeners;
+package se.liu.noalj314.listeners;
 
 import se.liu.noalj314.projekt.Game;
 import se.liu.noalj314.projekt.GameStatus;

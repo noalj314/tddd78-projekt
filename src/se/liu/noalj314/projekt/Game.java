@@ -1,38 +1,40 @@
 package se.liu.noalj314.projekt;
 
-import se.liu.noalj314.Screens.Menu;
-import se.liu.noalj314.Screens.PlayingScreen;
-
-import se.liu.noalj314.constants.Constants;
+import se.liu.noalj314.screens.Menu;
+import se.liu.noalj314.screens.PlayingScreen;
 import se.liu.noalj314.constants.LoadImage;
-import se.liu.noalj314.objects.enemies.Enemy;
+
 import se.liu.noalj314.objects.TileType;
 
 import javax.swing.*;
-import java.util.ArrayList;
+
 
 import static se.liu.noalj314.constants.Constants.AMOUNTOFTILES;
 import static se.liu.noalj314.constants.Constants.FPS;
-import static se.liu.noalj314.constants.Constants.PIXELSIZE;
+import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 import static se.liu.noalj314.constants.Constants.UPS;
 
+/**
+ * The Game class is the main class of the game. It initializes all the necessary classes,
+ * sets up the game window, and contains the main game loop. It also handles the game state
+ * and switches between the MENU and PLAYING states.
+ */
 public class Game extends JFrame implements Runnable
 {
-    private ArrayList<Enemy> enemyList = new ArrayList();
-    private Thread thread;
-
-    // all classes
-    private GamePanel gamePanel;
-    private Menu menu;
+    private GamePanel gamePanel = null;
+    private Menu menu = null;
     private TileType[][] map;
-    private Render render;
-    private PlayingScreen playingScreen;
-
+    private Render render = null;
+    private PlayingScreen playingScreen = null;
+    public void initClasses(){
+	render = new Render(this);
+	menu = new Menu(this);
+	gamePanel = new GamePanel(this);
+	playingScreen = new PlayingScreen(this);
+    }
     public Game(){
-
-	LoadImage.loadImages();
 	initClasses();
-	this.map = MapMaker.getMap();
+	this.map = MapMaker.MAP;
 	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	this.add(gamePanel);
 	this.setLocationRelativeTo(null);
@@ -49,7 +51,7 @@ public class Game extends JFrame implements Runnable
 	}
     }
     private void startGame(){
-	thread = new Thread(this);
+	Thread thread = new Thread(this);
 	thread.start();
     }
 
@@ -76,41 +78,22 @@ public class Game extends JFrame implements Runnable
 	    }
 	}
     }
-
-    // inits
-    public void initClasses(){
-	render = new Render(this);
-	menu = new Menu(this);
-	gamePanel = new GamePanel(this);
-	playingScreen = new PlayingScreen(this);
-	menu = new Menu(this);
-    }
-
-    // Getters and Setters
+    /** Getters and setters */
     public TileType getTileTypeAt(float x, float y){
-	float xTile = x / PIXELSIZE;
-	float yTile = y / PIXELSIZE;
-	if(xTile < 0 || AMOUNTOFTILES <= xTile )
+	float xTile = x / PIXEL_SIZE;
+	float yTile = y / PIXEL_SIZE;
+	if(xTile < 0 || AMOUNTOFTILES <= xTile || yTile< 0 || AMOUNTOFTILES <= yTile )
 	    return TileType.WATER;
-	if(yTile< 0 || AMOUNTOFTILES <= yTile )
-	    return TileType.WATER;
-	return map[(int) (y / PIXELSIZE)][(int)x / PIXELSIZE];
-    }
-    public TileType[][] getTiles() {
-	return map;
+	return map[(int) (y / PIXEL_SIZE)][(int)x / PIXEL_SIZE];
     }
     public PlayingScreen getPlayingScreen() {
 	return playingScreen;
     }
-
     public Render getRender(){
 	return render;
     }
     public Menu getMenu(){
 	return menu;
-    }
-    public void setTiles(TileType tileType, int x, int y) {
-	map[y][x] = tileType;
     }
 
     public static void main(String[] args) {

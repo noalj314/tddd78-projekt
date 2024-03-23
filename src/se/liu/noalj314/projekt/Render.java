@@ -1,10 +1,10 @@
 package se.liu.noalj314.projekt;
+import java.awt.Graphics;
 
-import se.liu.noalj314.constants.LoadImage;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
+/**
+ * The Render class is responsible for rendering the game state.
+ * It switches between the MENU and PLAYING states and calls the appropriate render method
+ */
 public class Render
 {
     private Game game;

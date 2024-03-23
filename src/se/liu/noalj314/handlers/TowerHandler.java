@@ -2,7 +2,10 @@ package se.liu.noalj314.handlers;
 import java.util.List;
 import java.util.ArrayList;
 
-import se.liu.noalj314.Screens.PlayingScreen;
+import se.liu.noalj314.objects.towers.Artillery;
+import se.liu.noalj314.objects.towers.Hunter;
+import se.liu.noalj314.objects.towers.Mage;
+import se.liu.noalj314.screens.PlayingScreen;
 import se.liu.noalj314.constants.LoadImage;
 import se.liu.noalj314.objects.enemies.Enemy;
 import se.liu.noalj314.objects.towers.Tower;
@@ -10,7 +13,7 @@ import se.liu.noalj314.objects.towers.Tower;
 import java.awt.*;
 
 
-import static se.liu.noalj314.constants.Constants.PIXELSIZE;
+import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 
 public class TowerHandler
 {
@@ -23,11 +26,7 @@ public class TowerHandler
     }
     public void render(Graphics g){
         for (Tower tower: towers)
-            switch(tower.getTowerType()){
-                case MAGE -> g.drawImage(LoadImage.mage, tower.getPosition().x, tower.getPosition().y, null);
-                case HUNTER -> g.drawImage(LoadImage.hunter, tower.getPosition().x, tower.getPosition().y, null);
-                case ARTILLERY -> g.drawImage(LoadImage.artillery, tower.getPosition().x, tower.getPosition().y, null);
-            }
+           tower.renderImage(g, tower.getPosition());
     }
 
 
@@ -58,12 +57,16 @@ public class TowerHandler
     }
 
     public void addTower(Tower chosenTower, Point point) {
-        towers.add(new Tower(point, chosenTower.getTowerType(), towerCounter++));
+        switch(chosenTower.getTowerType()) {
+            case MAGE -> towers.add(new Mage(point, chosenTower.getTowerType(), towerCounter++));
+            case ARTILLERY -> towers.add(new Artillery(point, chosenTower.getTowerType(), towerCounter++));
+            case HUNTER -> towers.add(new Hunter(point, chosenTower.getTowerType(), towerCounter++));
+        }
     }
 
     public Tower getTowerAt(Point position) {
         for (Tower tower: towers) {
-            if((tower.getPosition().x/PIXELSIZE) == (position.x / PIXELSIZE)  && (tower.getPosition().y/PIXELSIZE) == (position.y / PIXELSIZE))
+            if((tower.getPosition().x / PIXEL_SIZE) == (position.x / PIXEL_SIZE) && (tower.getPosition().y / PIXEL_SIZE) == (position.y / PIXEL_SIZE))
                 return tower;
         }
         return null;

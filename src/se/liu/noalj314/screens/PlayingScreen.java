@@ -1,7 +1,6 @@
-package se.liu.noalj314.Screens;
+package se.liu.noalj314.screens;
 
 import se.liu.noalj314.constants.Constants;
-import se.liu.noalj314.constants.LoadImage;
 import se.liu.noalj314.gui.Button;
 import se.liu.noalj314.handlers.BulletHandler;
 import se.liu.noalj314.handlers.EnemyHandler;
@@ -10,43 +9,46 @@ import se.liu.noalj314.handlers.TowerHandler;
 import se.liu.noalj314.handlers.WaveHandler;
 import se.liu.noalj314.objects.TileType;
 import se.liu.noalj314.objects.enemies.Enemy;
+import se.liu.noalj314.objects.towers.Artillery;
+import se.liu.noalj314.objects.towers.Hunter;
+import se.liu.noalj314.objects.towers.Mage;
 import se.liu.noalj314.objects.towers.Tower;
 import se.liu.noalj314.objects.towers.TowerType;
 import se.liu.noalj314.projekt.Game;
+import se.liu.noalj314.projekt.GameState;
 import se.liu.noalj314.projekt.GameStatus;
 import se.liu.noalj314.projekt.MapMaker;
 
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import static se.liu.noalj314.constants.Constants.COINS;
 import static se.liu.noalj314.constants.Constants.DIMENSIONX;
 import static se.liu.noalj314.constants.Constants.DIMENSIONY;
-import static se.liu.noalj314.constants.Constants.HP;
-import static se.liu.noalj314.constants.Constants.PIXELSIZE;
-import static se.liu.noalj314.objects.towers.TowerType.ARTILLERY;
-import static se.liu.noalj314.objects.towers.TowerType.HUNTER;
-import static se.liu.noalj314.objects.towers.TowerType.MAGE;
-
+import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
+/**
+ * This is the PlayingScreen class. It extends the GameScreen class and implements the Methods interface.
+ * It represents the playing screen of the game, where the actual gameplay takes place.
+ * It holds references to various handlers for managing game elements such as enemies, towers, bullets, and waves.
+ * It also manages the game state, including the player's coins and health points.
+ */
 public class PlayingScreen extends GameScreen implements Methods
 {
     private TileType[][] map;
     private TileHandler tileHandler;
-    private Button menu;
+    private Button menu = null;
     private EnemyHandler enemyHandler;
     private TowerHandler towerHandler;
     private BulletHandler bulletHandler;
     private WaveHandler waveHandler;
-    private Tower chosenTower;
-    private Point mousePos;
-    private int coins = COINS;
-    private int hp = HP;
-    private boolean gameOver;
-    private Tower towerClicked;
+    private GameState gameState;
+    private Tower chosenTower = null;
+    private Point mousePos = null;
+    private Tower towerClicked = null;
 
     public PlayingScreen(final Game game) {
         super(game);
-        this.map = MapMaker.getMap();
+        this.map = MapMaker.MAP;
+        this.gameState = new GameState();
         this.tileHandler = new TileHandler();
         this.enemyHandler = new EnemyHandler(this);
         this.towerHandler = new TowerHandler(this);
@@ -55,7 +57,7 @@ public class PlayingScreen extends GameScreen implements Methods
     }
 
     public void update(){
-        if(!gameOver) {
+        if(!gameState.isGameOver()) {
             enemyHandler.update();
             towerHandler.update();
             waveHandler.update();
@@ -68,9 +70,9 @@ public class PlayingScreen extends GameScreen implements Methods
 
     public void keyPressed(final KeyEvent e) {
         switch(e.getKeyCode()){
-            case KeyEvent.VK_1 -> this.chosenTower = new Tower(new Point(0,0), TowerType.MAGE, 0);
-            case KeyEvent.VK_2 -> this.chosenTower = new Tower(new Point(0,0), TowerType.HUNTER,0);
-            case KeyEvent.VK_3 -> this.chosenTower = new Tower(new Point(0,0), TowerType.ARTILLERY, 0);
+            case KeyEvent.VK_1 -> this.chosenTower = new Mage(new Point(0, 0), TowerType.MAGE, 0);
+            case KeyEvent.VK_2 -> this.chosenTower = new Hunter(new Point(0, 0), TowerType.HUNTER, 0);
+            case KeyEvent.VK_3 -> this.chosenTower = new Artillery(new Point(0, 0), TowerType.ARTILLERY, 0);
             case KeyEvent.VK_ESCAPE -> {
                 this.chosenTower = null;
                 this.towerClicked = null;
@@ -84,49 +86,34 @@ public class PlayingScreen extends GameScreen implements Methods
             int range = (int) chosenTower.getRange();
             int towerCost = Constants.Towers.getTowerCost(chosenTower.getTowerType());
             drawTowerRange(g, mousePos.x, mousePos.y, range);
-            switch (chosenTower.getTowerType()) {
-                case MAGE -> {
-                    g.drawImage(LoadImage.mage, mousePos.x, mousePos.y, null);
-                    g.drawString("Mage Cost: " + towerCost, (int) (DIMENSIONX * 0.75), (int) (DIMENSIONY * 0.1));
-                }
-                case ARTILLERY -> {
-                    g.drawImage(LoadImage.artillery, mousePos.x, mousePos.y, null);
-                    g.drawString("Artillery Cost: " + towerCost, (int) (DIMENSIONX * 0.75), (int) (DIMENSIONY * 0.1));
-
-                }
-                case HUNTER -> {
-                    g.drawImage(LoadImage.hunter, mousePos.x, mousePos.y, null);
-                    g.drawString("Hunter Cost: " + towerCost, (int) (DIMENSIONX * 0.75), (int) (DIMENSIONY * 0.1));
-                }
-            }
+            chosenTower.renderImage(g, mousePos);
         }
     }
     private void drawTowerRange(Graphics g, int towerX, int towerY, int range){
         g.setColor(Color.black);
-        int x = towerX - range + PIXELSIZE / 2;
-        int y = towerY - range + PIXELSIZE / 2;
+        int x = towerX - range + PIXEL_SIZE / 2;
+        int y = towerY - range + PIXEL_SIZE / 2;
         int diameter = range*2;
         g.drawOval(x, y, diameter, diameter);
     }
 
-    @Override public void mouseClick(Point point) {
+    @Override public void handleMouseClick(Point point) {
         // check that we have chosen a tower and so that we placeit on grass
         if(chosenTower != null && getGame().getTileTypeAt(point.x, point.y).equals(TileType.GRASS)) {
-            if (towerHandler.getTowerAt(point) == null)
-                if (coins >= Constants.Towers.getTowerCost(chosenTower.getTowerType())) {
-                    towerHandler.addTower(chosenTower, new Point((point.x / PIXELSIZE) * PIXELSIZE, (point.y / PIXELSIZE) * PIXELSIZE)); //so it snaps
-                    setCoins(coins - Constants.Towers.getTowerCost(chosenTower.getTowerType())); // remove coins
+            if (towerHandler.getTowerAt(point) == null) {
+                int towerCost = Constants.Towers.getTowerCost(chosenTower.getTowerType());
+                if (gameState.getCoins() >= towerCost) {
+                    towerHandler.addTower(chosenTower, new Point((point.x / PIXEL_SIZE) * PIXEL_SIZE, (point.y / PIXEL_SIZE) * PIXEL_SIZE)); //so it snaps
+                    gameState.setCoins(gameState.getCoins() - Constants.Towers.getTowerCost(chosenTower.getTowerType())); // remove coins
                 }
+            }
         } else {
             // not trying to buy a tower
             towerClicked = towerHandler.getTowerAt(mousePos);
         }
     }
-
-
-
-    @Override public void mouseMove(final Point point) {
-            mousePos = new Point((point.x / PIXELSIZE) * PIXELSIZE, (point.y / PIXELSIZE) * PIXELSIZE);             //so it snaps
+    public void handleMouseMove(final Point point) {
+            mousePos = new Point((point.x / PIXEL_SIZE) * PIXEL_SIZE, (point.y / PIXEL_SIZE) * PIXEL_SIZE);             //so it snaps
     }
 
 
@@ -149,36 +136,28 @@ public class PlayingScreen extends GameScreen implements Methods
         g.setColor(Color.black);
         g.drawString("Waves: " + waveHandler.getWaveCounter(), (int) (DIMENSIONX *0.05), (int)(DIMENSIONY*0.95));
     }
-
-    public void decreaseHP(){
-        hp --;
-        if (hp <= 0){
-            gameOver = true;
-        }
-    }
-
     private void renderCoins(Graphics g) {
         g.setColor(Color.yellow);
         g.setFont(new Font("Sans", Font.BOLD, 20));
-        g.drawString("Coins:" + coins, (int)( DIMENSIONX * 0.8), (int) (DIMENSIONY*0.05));
+        g.drawString("Coins:" + gameState.getCoins(), (int)( DIMENSIONX * 0.8), (int) (DIMENSIONY*0.05));
     }
     private void renderHP(Graphics g) {
         g.setColor(Color.RED);
         g.setFont(new Font("Sans", Font.BOLD, 15));
-        g.drawString("HP: " + hp, (int)( DIMENSIONX * 0.8), (int) (DIMENSIONY*0.13));
+        g.drawString("HP: " + gameState.getHp(), (int)( DIMENSIONX * 0.8), (int) (DIMENSIONY*0.13));
     }
 
     private void renderHover(final Graphics g) {
         g.setColor(Color.CYAN);
         if(mousePos != null)
-            g.drawRect(mousePos.x, mousePos.y, PIXELSIZE, PIXELSIZE);
+            g.drawRect(mousePos.x, mousePos.y, PIXEL_SIZE, PIXEL_SIZE);
     }
 
     private void renderMap(Graphics g) {
         for (int y = 0; y < map.length; y++) {
             for (int x = 0; x < map[y].length; x++) {
                 TileType tileType = map[y][x];
-                g.drawImage(tileHandler.getImage(tileType), x * PIXELSIZE, y * PIXELSIZE, null);
+                g.drawImage(tileHandler.getImage(tileType), x * PIXEL_SIZE, y * PIXEL_SIZE, null);
             }
         }
     }
@@ -193,12 +172,7 @@ public class PlayingScreen extends GameScreen implements Methods
         return waveHandler;
     }
 
-    public int getCoins() {
-        return coins;
+    public GameState getGameState() {
+        return gameState;
     }
-
-    public void setCoins(int coins) {
-        this.coins = coins;
-    }
-
 }

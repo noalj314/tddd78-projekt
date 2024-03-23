@@ -1,6 +1,5 @@
-package se.liu.noalj314.Screens;
+package se.liu.noalj314.screens;
 
-import se.liu.noalj314.constants.LoadImage;
 import se.liu.noalj314.projekt.Game;
 import se.liu.noalj314.gui.Button;
 import se.liu.noalj314.projekt.GameStatus;
@@ -9,8 +8,12 @@ import java.awt.*;
 
 import static se.liu.noalj314.constants.Constants.DIMENSIONX;
 import static se.liu.noalj314.constants.Constants.DIMENSIONY;
-import static se.liu.noalj314.constants.Constants.PIXELSIZE;
-
+/**
+ * This is the Menu class. It extends the GameScreen class and implements the Methods interface.
+ * It represents the menu screen of the game, providing options to start or quit the game.
+ * It holds references to Button objects for user interaction.
+ * It also handles mouse click events to control the game status.
+ */
 public class Menu extends GameScreen implements Methods
 {
     private Button start, quit;
@@ -35,7 +38,7 @@ public class Menu extends GameScreen implements Methods
 	quit.render(g);
     }
 
-    @Override public void mouseClick(Point point) {
+    @Override public void handleMouseClick(Point point) {
 	if(start.getBorder().contains(point)) {
 	    GameStatus.gameStatus = GameStatus.PLAYING;
 	}   else if(quit.getBorder().contains(point)) {
@@ -43,9 +46,7 @@ public class Menu extends GameScreen implements Methods
 	}
     }
 
-    @Override public void mouseMove(final Point point) {
 
-    }
 
     @Override public void render(final Graphics g) {
 	renderButtons(g);

@@ -3,8 +3,6 @@ package se.liu.noalj314.objects.enemies;
 import se.liu.noalj314.constants.Constants;
 import se.liu.noalj314.handlers.EnemyHandler;
 
-import java.util.ArrayList;
-
 public abstract class Enemy
 {
     protected int health, speed;
@@ -14,7 +12,7 @@ public abstract class Enemy
     protected EnemyType enemyType;
     private Direction lastDirection;
     protected EnemyHandler enemyHandler;
-    protected int freezeTickLimit = Constants.FREEZETICKLIMIT;
+    protected int freezeTickLimit = Constants.FREEZE_TICK_LIMIT;
     protected int freezeTick = freezeTickLimit;
     private float freezeSpeed;
 

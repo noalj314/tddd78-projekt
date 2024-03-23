@@ -6,17 +6,16 @@ import java.awt.*;
 
 import static se.liu.noalj314.constants.Constants.Towers.*;
 
-public class Tower
+public abstract class Tower
 {
     Point position;
     TowerType type;
-    int id, firerateCounter, damage;
-
+    int firerateCounter, damage, id;
     private float firerate, range, freezeSpeed;
-    public Tower(Point position, TowerType type, int id) {
+    protected Tower(Point position, TowerType type, int id) {
+        this.id = id;
         this.position = position;
         this.type = type;
-        this.id = id;
         setStartingValues();
     }
     public void update(){
@@ -52,4 +51,8 @@ public class Tower
     public float getFreezeSpeed() {
         return freezeSpeed;
     }
+    public abstract void renderImage(Graphics g, Point position);
+    public abstract void renderString(Graphics g, Point position);
+
+
 }

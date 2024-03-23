@@ -1,11 +1,10 @@
 package se.liu.noalj314.handlers;
 
-import se.liu.noalj314.Screens.PlayingScreen;
+import se.liu.noalj314.screens.PlayingScreen;
 import se.liu.noalj314.constants.Constants;
 import se.liu.noalj314.constants.LoadImage;
 import se.liu.noalj314.objects.Bullet;
 import se.liu.noalj314.objects.enemies.Enemy;
-import se.liu.noalj314.objects.enemies.EnemyType;
 import se.liu.noalj314.objects.towers.Tower;
 import se.liu.noalj314.objects.towers.TowerType;
 
@@ -13,10 +12,10 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
-import static se.liu.noalj314.constants.Constants.BULLETSIZE;
+import static se.liu.noalj314.constants.Constants.BULLET_SIZE;
 import static se.liu.noalj314.constants.Constants.DIMENSIONX;
 import static se.liu.noalj314.constants.Constants.DIMENSIONY;
-import static se.liu.noalj314.constants.Constants.PIXELSIZE;
+import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 
 
 public class BulletHandler
@@ -51,9 +50,9 @@ public class BulletHandler
 	return true;
     }
     private boolean bulletHit(Bullet bullet) {
-	Rectangle bulletRect = new Rectangle((int)bullet.getX(), (int)bullet.getY(), BULLETSIZE, BULLETSIZE);
+	Rectangle bulletRect = new Rectangle((int)bullet.getX(), (int)bullet.getY(), BULLET_SIZE, BULLET_SIZE);
 	for (Enemy enemy : playingScreen.getEnemyHandler().getEnemies()) {
-	    Rectangle enemyRect = new Rectangle((int)enemy.getX(), (int)enemy.getY(), PIXELSIZE, PIXELSIZE);
+	    Rectangle enemyRect = new Rectangle((int)enemy.getX(), (int)enemy.getY(), PIXEL_SIZE, PIXEL_SIZE);
 	    if (enemyRect.intersects(bulletRect)) {
 		enemy.decreaseHealth(bullet.getDamage());
 		if (bullet.getBulletType().equals(Bullet.BulletType.SHELL))

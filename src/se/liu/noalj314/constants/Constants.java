@@ -2,29 +2,77 @@ package se.liu.noalj314.constants;
 
 import se.liu.noalj314.objects.Bullet;
 import se.liu.noalj314.objects.enemies.EnemyType;
-import se.liu.noalj314.objects.towers.Tower;
 import se.liu.noalj314.objects.towers.TowerType;
-
+/**
+ * The Constants class provides a central location for defining and accessing constant values used throughout the game.
+ * It includes constants for game settings such as frames per second, updates per second, pixel size, and dimensions.
+ * It also includes nested classes for defining and accessing constants related to enemies, bullets, and towers.
+ */
 public class Constants
 {
+    /**
+     * The FPS constant represents the frames per second at which the game runs.
+     * It is used to control the speed of the game's rendering loop.
+     */
     public static final double FPS = 60.0;
+
+    /**
+     * The UPS constant represents the updates per second at which the game runs.
+     * It is used to control the speed of the game's update loop.
+     */
     public static final double UPS = 60.0;
-    public static final int PIXELSIZE = 48;
-    public static final int BULLETSIZE = (int) (PIXELSIZE/ 3.5);
+
+    /**
+     * The PIXELSIZE constant represents the size of a pixel in the game.
+     */
+    public static final int PIXEL_SIZE = 48;
+
+    /**
+     * The BULLETSIZE constant represents the size of a bullet in the game.
+     */
+    public static final int BULLET_SIZE = (int) (PIXEL_SIZE / 3.5);
+
+    /**
+     * The DIMENSIONX constant represents the width of the game window.
+     */
     public static final int DIMENSIONX = 720;
+
+    /**
+     * The DIMENSIONY constant represents the height of the game window.
+     */
     public static final int DIMENSIONY = 720;
+
+    /**
+     * The AMOUNTOFTILES constant represents the number of tiles in the game.
+     */
     public static final int AMOUNTOFTILES = 15;
-    public static final int STARTINGAMTENEMIES = 3;
+
+    /**
+     * The STARTINGAMTENEMIES constant represents the number of enemies at the start of the game.
+     */
+    public static final int AMOUNT_OF_ENEMIES = 3;
+
+    /**
+     * The COINS constant represents the number of coins at the start of the game.
+     */
     public static final int COINS = 100;
+
+    /**
+     * The HP constant represents the initial health points of the player.
+     */
     public static final int HP = 20;
-    public static final int FREEZETICKLIMIT = (int) (UPS * 3);
+
+    /**
+     * The FREEZETICKLIMIT constant represents the limit of freeze ticks in the game.
+     */
+    public static final int FREEZE_TICK_LIMIT = (int) (UPS * 3);
     public static class Enemies {
         public static int getReward(EnemyType enemyType) {
             return switch (enemyType) {
                 case BAT -> 5;
                 case HUMANOID -> 25;
-                case BEAR -> 10;
-                case RAT -> 5;
+                case BEAR -> 15;
+                case RAT -> 10;
             };
         }
 
@@ -90,9 +138,9 @@ public class Constants
         }
         public static int getTowerCost(TowerType towerType) {
             switch(towerType) {
-                case MAGE -> {return 25;}
+                case MAGE -> {return 50;}
                 case HUNTER -> {return 25;}
-                case ARTILLERY -> {return 25;}
+                case ARTILLERY -> {return 100;}
             }
             return 0;
         }

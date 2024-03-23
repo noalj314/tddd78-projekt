@@ -1,6 +1,6 @@
 package se.liu.noalj314.handlers;
 
-import se.liu.noalj314.Screens.PlayingScreen;
+import se.liu.noalj314.screens.PlayingScreen;
 import se.liu.noalj314.constants.Constants;
 import se.liu.noalj314.misc.Wave;
 import se.liu.noalj314.objects.enemies.Enemy;
@@ -17,7 +17,7 @@ public class WaveHandler
     private double waveLimitTick = Constants.UPS * 5;
     private double waveTick = waveLimitTick;
     private int indexEnemy;
-    private int amountOfEnemiesInWave = Constants.STARTINGAMTENEMIES;
+    private int amountOfEnemiesInWave = Constants.AMOUNT_OF_ENEMIES;
     private Wave currentWave;
     private int waveCounter;
 
