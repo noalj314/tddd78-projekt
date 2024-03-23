@@ -9,6 +9,10 @@ import java.io.InputStream;
 import static se.liu.noalj314.constants.Constants.BULLET_SIZE;
 import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 
+/**
+ * The LoadImage class is responsible for loading and scaling images used in the game.
+ * It provides static methods and fields for accessing the images.
+ */
 public class LoadImage
 {
     /**
@@ -74,7 +78,7 @@ public class LoadImage
     /**
      * The ice bolt image used in the game.
      */
-    public final static BufferedImage ICEBOLT;
+    public final static BufferedImage ICE_BOLT;
 
     /**
      * The explosion image used in the game.
@@ -101,7 +105,7 @@ public class LoadImage
 	    HUNTER = loadImage("/images/hunter.png", PIXEL_SIZE);
 	    ARROW = loadImage("/images/arrow.png", BULLET_SIZE);
 	    SHELL = loadImage("/images/shell.png", BULLET_SIZE);
-	    ICEBOLT = loadImage("/images/ice.png",BULLET_SIZE);
+	    ICE_BOLT = loadImage("/images/ice.png", BULLET_SIZE);
 	    EXPLOSION = loadImage("/images/explosion.png",PIXEL_SIZE);
 	    FREEZE = loadImage("/images/freeze.png", PIXEL_SIZE);
 	} catch (IOException e) {
@@ -118,7 +122,13 @@ public class LoadImage
     }
     private static BufferedImage loadImage(String path, int scaling) throws IOException {
 	try (InputStream imgStream = LoadImage.class.getResourceAsStream(path)) {
+	    if (imgStream == null) {
+		throw new IOException("Resource not found: " + path);
+	    }
 	    BufferedImage img = ImageIO.read(imgStream);
+	    if (img == null) {
+		throw new IOException("Failed to read image: " + path);
+	    }
 	    return scaleImage(img, scaling, scaling);
 	}
     }

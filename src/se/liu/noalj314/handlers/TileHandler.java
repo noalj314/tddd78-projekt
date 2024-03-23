@@ -8,9 +8,13 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The TileHandler class is responsible for managing the tiles in the game.
+ * It provides methods for getting the image associated with a specific tile type.
+ */
 public class TileHandler
 {
-    public List<Tile> tiles = new ArrayList<Tile>();
+    private List<Tile> tiles = new ArrayList<Tile>();
     public BufferedImage getImage(TileType tileType) {
 	switch (tileType) {
 	    case GRASS:

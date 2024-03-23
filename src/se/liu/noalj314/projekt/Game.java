@@ -6,7 +6,7 @@ import se.liu.noalj314.objects.TileType;
 import javax.swing.*;
 
 
-import static se.liu.noalj314.constants.Constants.AMOUNTOFTILES;
+import static se.liu.noalj314.constants.Constants.AMOUNT_OF_TILES;
 import static se.liu.noalj314.constants.Constants.FPS;
 import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 import static se.liu.noalj314.constants.Constants.UPS;
@@ -81,7 +81,7 @@ public class Game implements Runnable
     public TileType getTileTypeAt(float x, float y){
 	float xTile = x / PIXEL_SIZE;
 	float yTile = y / PIXEL_SIZE;
-	if(xTile < 0 || AMOUNTOFTILES <= xTile || yTile< 0 || AMOUNTOFTILES <= yTile )
+	if(xTile < 0 || AMOUNT_OF_TILES <= xTile || yTile < 0 || AMOUNT_OF_TILES <= yTile )
 	    return TileType.WATER;
 	return map[(int) (y / PIXEL_SIZE)][(int)x / PIXEL_SIZE];
     }

@@ -6,8 +6,11 @@ import se.liu.noalj314.objects.Bullet;
 
 import java.awt.*;
 
-import static se.liu.noalj314.constants.Constants.DIMENSIONX;
-import static se.liu.noalj314.constants.Constants.DIMENSIONY;
+import static se.liu.noalj314.constants.Constants.DIMENSION_X;
+import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
+import static se.liu.noalj314.constants.Constants.Towers.HUNTER_DAMAGE;
+import static se.liu.noalj314.constants.Constants.Towers.HUNTER_FIRERATE;
+import static se.liu.noalj314.constants.Constants.Towers.HUNTER_RANGE;
 
 /**
  * The Hunter class represents a hunter tower in the game.
@@ -17,18 +20,31 @@ import static se.liu.noalj314.constants.Constants.DIMENSIONY;
 public class Hunter extends Tower
 {
 
-    public Hunter(final Point position, final TowerType type, int id) {
-	super(position, type, id);
+    public Hunter(final Point position, int id) {
+	super(position, id);
+	setStartingValues();
     }
     @Override public void renderImage(final Graphics g, final Point position) {
 	g.drawImage(LoadImage.HUNTER, position.x, position.y, null);
     }
     @Override public void renderString(final Graphics g, final Point position) {
-	g.drawString("Artillery Cost: " + Constants.Towers.getTowerCost(TowerType.ARTILLERY), (int) (DIMENSIONX * 0.75), (int) (DIMENSIONY * 0.1));
+	g.drawString("Artillery Cost: " + Constants.Towers.getTowerCost(TowerType.ARTILLERY), (int) (DIMENSION_X * 0.75), (int) (
+		DIMENSION_Y * 0.1));
     }
-
     @Override public Bullet.BulletType getBulletType() {
 	return Bullet.BulletType.ARROW;
     }
 
+    @Override public Tower createTower() {
+	return new Hunter(position, id);
+    }
+    @Override public TowerType getTowerType() {
+	return TowerType.HUNTER;
+    }
+
+    @Override public void setStartingValues() {
+	this.firerate = HUNTER_FIRERATE;
+	this.damage = HUNTER_DAMAGE;
+	this.range = HUNTER_RANGE;
+    }
 }

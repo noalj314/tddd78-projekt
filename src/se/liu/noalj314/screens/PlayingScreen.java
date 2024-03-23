@@ -1,7 +1,6 @@
 package se.liu.noalj314.screens;
 
 import se.liu.noalj314.constants.Constants;
-import se.liu.noalj314.gui.Button;
 import se.liu.noalj314.handlers.BulletHandler;
 import se.liu.noalj314.handlers.EnemyHandler;
 import se.liu.noalj314.handlers.TileHandler;
@@ -22,8 +21,8 @@ import se.liu.noalj314.projekt.MapMaker;
 import java.awt.*;
 import java.awt.event.KeyEvent;
 
-import static se.liu.noalj314.constants.Constants.DIMENSIONX;
-import static se.liu.noalj314.constants.Constants.DIMENSIONY;
+import static se.liu.noalj314.constants.Constants.DIMENSION_X;
+import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
 import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 /**
  * This is the PlayingScreen class. It extends the GameScreen class and implements the Methods interface.
@@ -69,9 +68,9 @@ public class PlayingScreen extends GameScreen implements Methods
 
     public void keyPressed(final KeyEvent e) {
         switch(e.getKeyCode()){
-            case KeyEvent.VK_1 -> this.chosenTower = new Mage(new Point(0, 0), TowerType.MAGE, 0);
-            case KeyEvent.VK_2 -> this.chosenTower = new Hunter(new Point(0, 0), TowerType.HUNTER, 0);
-            case KeyEvent.VK_3 -> this.chosenTower = new Artillery(new Point(0, 0), TowerType.ARTILLERY, 0);
+            case KeyEvent.VK_1 -> this.chosenTower = new Mage(new Point(0, 0), 0);
+            case KeyEvent.VK_2 -> this.chosenTower = new Hunter(new Point(0, 0), 0);
+            case KeyEvent.VK_3 -> this.chosenTower = new Artillery(new Point(0, 0), 0);
             case KeyEvent.VK_ESCAPE -> {
                 this.chosenTower = null;
                 this.towerClicked = null;
@@ -133,17 +132,17 @@ public class PlayingScreen extends GameScreen implements Methods
 
     private void renderWaveCounter(Graphics g) {
         g.setColor(Color.black);
-        g.drawString("Waves: " + waveHandler.getWaveCounter(), (int) (DIMENSIONX *0.05), (int)(DIMENSIONY*0.95));
+        g.drawString("Waves: " + waveHandler.getWaveCounter(), (int) (DIMENSION_X * 0.05), (int)(DIMENSION_Y * 0.95));
     }
     private void renderCoins(Graphics g) {
         g.setColor(Color.yellow);
         g.setFont(new Font("Sans", Font.BOLD, 20));
-        g.drawString("Coins:" + gameState.getCoins(), (int)( DIMENSIONX * 0.8), (int) (DIMENSIONY*0.05));
+        g.drawString("Coins:" + gameState.getCoins(), (int)(DIMENSION_X * 0.8), (int) (DIMENSION_Y * 0.05));
     }
     private void renderHP(Graphics g) {
         g.setColor(Color.RED);
         g.setFont(new Font("Sans", Font.BOLD, 15));
-        g.drawString("HP: " + gameState.getHp(), (int)( DIMENSIONX * 0.8), (int) (DIMENSIONY*0.13));
+        g.drawString("HP: " + gameState.getHp(), (int)(DIMENSION_X * 0.8), (int) (DIMENSION_Y * 0.13));
     }
 
     private void renderHover(final Graphics g) {
@@ -162,6 +161,7 @@ public class PlayingScreen extends GameScreen implements Methods
     }
 
     public void attack( Tower tower,  Enemy enemy) {
+        System.out.println("ist his caleld");
         bulletHandler.createBullet(enemy, tower);
     }
     public EnemyHandler getEnemyHandler() {

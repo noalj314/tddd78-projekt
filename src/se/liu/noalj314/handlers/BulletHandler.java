@@ -13,9 +13,11 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 import static se.liu.noalj314.constants.Constants.BULLET_SIZE;
-import static se.liu.noalj314.constants.Constants.DIMENSIONX;
-import static se.liu.noalj314.constants.Constants.DIMENSIONY;
+import static se.liu.noalj314.constants.Constants.DIMENSION_X;
+import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
 import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
+import static se.liu.noalj314.constants.Constants.Towers.ARTILLERY_RANGE;
+import static se.liu.noalj314.constants.Constants.Towers.FREEZE_MULTIPLIER;
 
 /**
  * The BulletHandler class manages the bullets in the game.
@@ -46,8 +48,8 @@ public class BulletHandler
 	}
     }
     private boolean isBulletOutsideMap(Bullet bullet){
-	if (bullet.getX() >= 0 || bullet.getX() <= DIMENSIONX)
-	    if (bullet.getY() >= 0 || bullet.getY() <= DIMENSIONY)
+	if (bullet.getX() >= 0 || bullet.getX() <= DIMENSION_X)
+	    if (bullet.getY() >= 0 || bullet.getY() <= DIMENSION_Y)
 		return false;
 	return true;
     }
@@ -60,7 +62,7 @@ public class BulletHandler
 		if (bullet.getBulletType().equals(Bullet.BulletType.SHELL))
 		   explosionHit(bullet);
 		else if (bullet.getBulletType().equals(Bullet.BulletType.ICE)) {
-		    enemy.decreaseSpeed(bullet.getFreezeSpeed());
+		    enemy.decreaseSpeed(FREEZE_MULTIPLIER);
 		}
 		return true;
 	    }
@@ -70,7 +72,7 @@ public class BulletHandler
 
     private void explosionHit(Bullet bullet){
 	for (Enemy enemy: playingScreen.getEnemyHandler().getEnemies()){
-	    float explosionRadius = Constants.Towers.getStartRange(TowerType.ARTILLERY);
+	    float explosionRadius = ARTILLERY_RANGE;
 	    float xDistance = bullet.getX() - enemy.getX();
 	    float yDistance = bullet.getY() - enemy.getY();
 	    float distance = (float) Math.hypot(xDistance, yDistance);
@@ -115,7 +117,7 @@ public class BulletHandler
 		return LoadImage.SHELL;
 	    }
 	    case ICE -> {
-		return LoadImage.ICEBOLT;
+		return LoadImage.ICE_BOLT;
 	    }
 	    case ARROW -> {
 		return LoadImage.ARROW;

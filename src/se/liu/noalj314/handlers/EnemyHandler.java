@@ -12,7 +12,7 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import static se.liu.noalj314.constants.Constants.AMOUNTOFTILES;
+import static se.liu.noalj314.constants.Constants.AMOUNT_OF_TILES;
 import static se.liu.noalj314.constants.Constants.Enemies.getSpeed;
 import static se.liu.noalj314.constants.Constants.Enemies.getStartHealth;
 import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
@@ -109,11 +109,11 @@ public class EnemyHandler
     private void fixEnemyDimension(Enemy enemy, Direction direction, int xTile, int yTile) {
 	switch (direction) {
 	    case RIGHT -> {
-		if (xTile < AMOUNTOFTILES -  1)
+		if (xTile < AMOUNT_OF_TILES - 1)
 		    xTile++;
 	    }
 	    case DOWN -> {
-		if (yTile < AMOUNTOFTILES - 1)
+		if (yTile < AMOUNT_OF_TILES - 1)
 		    yTile++;
 	    }
 	}

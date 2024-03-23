@@ -6,8 +6,8 @@ import se.liu.noalj314.projekt.GameStatus;
 
 import java.awt.*;
 
-import static se.liu.noalj314.constants.Constants.DIMENSIONX;
-import static se.liu.noalj314.constants.Constants.DIMENSIONY;
+import static se.liu.noalj314.constants.Constants.DIMENSION_X;
+import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
 /**
  * This is the Menu class. It extends the GameScreen class and implements the Methods interface.
  * It represents the menu screen of the game, providing options to start or quit the game.
@@ -24,11 +24,11 @@ public class Menu extends GameScreen implements Methods
     }
 
     private void createButtons() {
-	int w = DIMENSIONX / 4;
+	int w = DIMENSION_X / 4;
 	int h = w / 4;
-	int x = DIMENSIONX / 2 - w / 2;
-	int y = DIMENSIONY / 6;
-	int yMargin = DIMENSIONY / 8;
+	int x = DIMENSION_X / 2 - w / 2;
+	int y = DIMENSION_Y / 6;
+	int yMargin = DIMENSION_Y / 8;
 
 	start = new Button(x, y, w, h, "Start");
 	quit = new Button(x, y + 2* yMargin, w, h, "Quit");
@@ -54,6 +54,6 @@ public class Menu extends GameScreen implements Methods
     }
 
     private void renderInfoText(final Graphics g) {
-	g.drawString("Controls are: 1,2,3 for tower selection, escape to deselect tower",(int)(DIMENSIONX*0.2), (int)(DIMENSIONY *0.6));
+	g.drawString("Controls are: 1,2,3 for tower selection, escape to deselect tower", (int)(DIMENSION_X * 0.2), (int)(DIMENSION_Y * 0.6));
     }
 }

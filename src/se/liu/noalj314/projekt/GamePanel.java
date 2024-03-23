@@ -4,8 +4,8 @@ import java.awt.Dimension;
 import se.liu.noalj314.listeners.KeyboardListener;
 import se.liu.noalj314.listeners.GameMouseListener;
 import javax.swing.JPanel;
-import static se.liu.noalj314.constants.Constants.DIMENSIONX;
-import static se.liu.noalj314.constants.Constants.DIMENSIONY;
+import static se.liu.noalj314.constants.Constants.DIMENSION_X;
+import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
 
 /**
  * The GamePanel class extends JPanel and represents the main game panel in the game.
@@ -31,6 +31,6 @@ public class GamePanel extends JPanel
     }
     @Override
     public Dimension getPreferredSize() {
-        return new Dimension(DIMENSIONX, DIMENSIONY);
+        return new Dimension(DIMENSION_X, DIMENSION_Y);
     }
 }

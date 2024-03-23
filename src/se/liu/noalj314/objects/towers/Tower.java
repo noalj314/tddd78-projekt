@@ -13,30 +13,22 @@ import static se.liu.noalj314.constants.Constants.Towers.*;
  */
 public abstract class Tower
 {
-    private Point position;
-    private TowerType type;
-    private int firerateCounter, damage, id;
-    private float firerate, range, freezeSpeed;
-    protected Tower(Point position, TowerType type, int id) {
+    protected Point position;
+    protected int id;
+    private int firerateCounter;
+    protected int damage;
+    protected float firerate;
+    protected float range;
+    protected float freezeSpeed;
+    protected Tower(Point position, int id) {
         this.id = id;
         this.position = position;
-        this.type = type;
-        setStartingValues();
     }
     public void update(){
         firerateCounter++;
     }
     public Point getPosition(){
         return position;
-    }
-    public void setStartingValues() {
-        firerate = getStartFirerate(type);
-        damage = getStartDamage(type);
-        range = getStartRange(type);
-        freezeSpeed = Constants.Towers.getFreezeSpeed(type);
-    }
-    public TowerType getTowerType(){
-        return type;
     }
 
     public float getRange() {
@@ -49,7 +41,6 @@ public abstract class Tower
     public void resetFirerateCounter() {
         firerateCounter = 0;
     }
-
     public int getDamage() {
         return damage;
     }
@@ -59,4 +50,7 @@ public abstract class Tower
     public abstract void renderImage(Graphics g, Point position);
     public abstract void renderString(Graphics g, Point position);
     public abstract Bullet.BulletType getBulletType();
+    public abstract Tower createTower();
+    public abstract TowerType getTowerType();
+    public abstract void setStartingValues();
 }

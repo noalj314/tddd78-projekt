@@ -59,9 +59,9 @@ public class TowerHandler
 
     public void addTower(Tower chosenTower, Point point) {
         switch(chosenTower.getTowerType()) {
-            case MAGE -> towers.add(new Mage(point, chosenTower.getTowerType(), towerCounter));
-            case ARTILLERY -> towers.add(new Artillery(point, chosenTower.getTowerType(), towerCounter));
-            case HUNTER -> towers.add(new Hunter(point, chosenTower.getTowerType(), towerCounter));
+            case MAGE -> towers.add(new Mage(point, towerCounter));
+            case ARTILLERY -> towers.add(new Artillery(point, towerCounter));
+            case HUNTER -> towers.add(new Hunter(point, towerCounter));
         }
         towerCounter++;
     }

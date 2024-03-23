@@ -35,17 +35,17 @@ public class Constants
     /**
      * The DIMENSIONX constant represents the width of the game window.
      */
-    public static final int DIMENSIONX = 720;
+    public static final int DIMENSION_X = 720;
 
     /**
      * The DIMENSIONY constant represents the height of the game window.
      */
-    public static final int DIMENSIONY = 720;
+    public static final int DIMENSION_Y = 720;
 
     /**
      * The AMOUNTOFTILES constant represents the number of tiles in the game.
      */
-    public static final int AMOUNTOFTILES = 15;
+    public static final int AMOUNT_OF_TILES = 15;
 
     /**
      * The STARTINGAMTENEMIES constant represents the number of enemies at the start of the game.
@@ -85,12 +85,17 @@ public class Constants
             };
         }
 
+        public static final float BAT_SPEED = 0.65f;
+        public static final float HUMANOID_SPEED = 0.35f;
+        public static final float BEAR_SPEED = 0.45f;
+        public static final float RAT_SPEED = 0.75f;
+
         public static float getSpeed(EnemyType enemyType) {
             return switch (enemyType) {
-                case BAT -> 0.65f;
-                case HUMANOID -> 0.35f;
-                case BEAR -> 0.45f;
-                case RAT -> 0.75f;
+                case BAT -> BAT_SPEED;
+                case HUMANOID -> HUMANOID_SPEED;
+                case BEAR -> BEAR_SPEED;
+                case RAT -> RAT_SPEED;
             };
         }
 
@@ -115,36 +120,16 @@ public class Constants
         }
     }
     public static class Towers {
-        public static int getStartDamage(TowerType towerType) {
-            switch(towerType) {
-                case MAGE -> {return 5;}
-                case HUNTER -> {return 7;}
-                case ARTILLERY -> {return 6;}
-            }
-            return 0;
-        }
-        public static float getFreezeSpeed(TowerType towerType) {
-            switch(towerType) {
-                case MAGE -> {return 0.6f;}
-            }
-            return 1;
-        }
-        public static float getStartFirerate(TowerType towerType) {
-            switch(towerType) {
-                case MAGE -> {return 60;}
-                case HUNTER -> {return 40;}
-                case ARTILLERY -> {return 120;}
-            }
-            return 0;
-        }
-        public static float getStartRange(TowerType towerType) {
-            switch(towerType) {
-                case MAGE -> {return 105;}
-                case HUNTER -> {return 135;}
-                case ARTILLERY -> {return 80;}
-            }
-            return 0;
-        }
+        public static final float FREEZE_MULTIPLIER = 0.6f;
+        public static final int MAGE_DAMAGE = 5;
+        public static final int HUNTER_DAMAGE = 7;
+        public static final int ARTILLERY_DAMAGE = 6;
+        public static final int MAGE_FIRERATE = 60;
+        public static final int HUNTER_FIRERATE = 40;
+        public static final int ARTILLERY_FIRERATE = 120;
+        public static final int HUNTER_RANGE = 135;
+        public static final int MAGE_RANGE = 105;
+        public static final int ARTILLERY_RANGE = 120;
         public static int getTowerCost(TowerType towerType) {
             switch(towerType) {
                 case MAGE -> {return 50;}
