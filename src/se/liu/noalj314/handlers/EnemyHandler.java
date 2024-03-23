@@ -50,7 +50,7 @@ public class EnemyHandler
     }
 
     public boolean isTimeForSpawn(){
-	if (playingScreen.getWaveHandler().timeForSpawn() && playingScreen.getWaveHandler().enemiesLeftToSpawn()){
+	if (playingScreen.getWaveHandler().isTimeToSpawn() && playingScreen.getWaveHandler().hasEnemiesToSpawn()){
 		return true;
 	}
 	return false;
@@ -69,11 +69,10 @@ public class EnemyHandler
     }
 
     private boolean noMoreMap(Enemy enemy) {
-	// correct spelling since it is only one; enemy's
-	final float EPSILON = 0.2f;
-	float enemysTotalPosX = enemy.getX() / PIXEL_SIZE;
-	float enemysTotalPosY = enemy.getY() / PIXEL_SIZE;
-	if(Math.abs(enemysTotalPosX - END_X) < EPSILON && Math.abs(enemysTotalPosY - END_Y) < EPSILON)
+	final float epsilon = 0.2f;
+	float enemyTotalPosX = enemy.getX() / PIXEL_SIZE;
+	float enemyTotalPosY = enemy.getY() / PIXEL_SIZE;
+	if(Math.abs(enemyTotalPosX - END_X) < epsilon && Math.abs(enemyTotalPosY - END_Y) < epsilon)
 	    return true;
 	return false;
     }
@@ -86,13 +85,12 @@ public class EnemyHandler
 	int yTile = (int) (enemy.getY() / PIXEL_SIZE);
 
 	fixEnemyDimension(enemy, direction, xTile, yTile);
-	if (noMoreMap(enemy) && enemy.isAlive()) {
-	    enemy.kill();
-	    playingScreen.getGameState().decreaseHp();
-	}
+	tryToRemoveEnemy(enemy);
+
 	if (direction.equals(Direction.LEFT) || direction.equals(Direction.RIGHT)) {
 	    float newY = (enemy.getY() + getSpeedY(Direction.DOWN, enemy));
 	    float enemySpeed = enemy.getSpeed();
+
 	    if (playingScreen.getGame().getTileTypeAt(enemy.getX(), newY).equals(TileType.ROAD))
 		enemy.move(enemySpeed, Direction.DOWN);
 	    else
@@ -105,7 +103,12 @@ public class EnemyHandler
 		enemy.move(getSpeed(enemy.getEnemyType()), Direction.RIGHT);
 	}
     }
-
+    private void tryToRemoveEnemy(Enemy enemy){
+	if (noMoreMap(enemy) && enemy.isAlive()) {
+	    enemy.kill();
+	    playingScreen.getGameState().decreaseHp();
+	}
+    }
     private void fixEnemyDimension(Enemy enemy, Direction direction, int xTile, int yTile) {
 	switch (direction) {
 	    case RIGHT -> {

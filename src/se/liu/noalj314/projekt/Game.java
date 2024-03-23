@@ -18,6 +18,7 @@ import static se.liu.noalj314.constants.Constants.UPS;
  */
 public class Game implements Runnable
 {
+    private GameStatus gameStatus = GameStatus.MENU;
     private JFrame frame = null;
     private GamePanel gamePanel = null;
     private Menu menu = null;
@@ -41,13 +42,7 @@ public class Game implements Runnable
 	frame.setVisible(true);
     }
     private void updateGame() {
-	switch (GameStatus.gameStatus) {
-	    case PLAYING:
-		playingScreen.update();
-		break;
-	    default:
-		break;
-	}
+	playingScreen.update();
     }
     private void startGame(){
 	Thread thread = new Thread(this);
@@ -93,6 +88,13 @@ public class Game implements Runnable
     }
     public Menu getMenu(){
 	return menu;
+    }
+    public GameStatus getGameStatus() {
+	return gameStatus;
+    }
+
+    public void setGameStatus(GameStatus gameStatus) {
+	this.gameStatus = gameStatus;
     }
 
     public static void main(String[] args) {

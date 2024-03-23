@@ -44,7 +44,7 @@ public class WaveHandler
 	if (waveTick < waveLimitTick && isEndOfWave()) {
 	    waveTick++;
 	}
-	if (isEndOfWave() && timeForWave()){
+	if (isEndOfWave() && isTimeForWave()){
 	    increaseEnemiesForNextWave();
 	    createNewWave();
 	}
@@ -55,13 +55,13 @@ public class WaveHandler
 
     public void createNewWave(){
 	EnemyType[] types = EnemyType.values();
-	List<EnemyType> enemyWaveList = new ArrayList<>();
+	List<EnemyType> enemyWave = new ArrayList<>();
 
 	for (int i=0 ; i < amountOfEnemiesInWave; i++) {
 	    EnemyType randomType = types[RANDOM.nextInt(types.length)];
-	    enemyWaveList.add(randomType);
+	    enemyWave.add(randomType);
 	}
-	currentWave = new Wave(enemyWaveList);
+	currentWave = new Wave(enemyWave);
 	indexEnemy = 0;
 	waveCounter++;
 	if (waveCounter % WAVE_INTERVAL != 0) {
@@ -69,7 +69,7 @@ public class WaveHandler
 	}
     }
     public boolean isEndOfWave(){
-	if (enemiesLeftToSpawn()) {
+	if (hasEnemiesToSpawn()) {
 	    return false;
 	}
 	for (Enemy enemy : playingScreen.getEnemyHandler().getEnemies()) {
@@ -85,13 +85,13 @@ public class WaveHandler
 	indexEnemy++;
 	return enemyType;
     }
-    public boolean timeForSpawn(){
+    public boolean isTimeToSpawn(){
 	return spawnTick  >= spawnTickLimit;
     }
-    public boolean timeForWave(){
+    public boolean isTimeForWave(){
 	return waveTick  >= waveLimitTick;
     }
-    public boolean enemiesLeftToSpawn(){
+    public boolean hasEnemiesToSpawn(){
 	return (indexEnemy) < currentWave.getEnemies().size();
     }
     public int getWaveCounter(){

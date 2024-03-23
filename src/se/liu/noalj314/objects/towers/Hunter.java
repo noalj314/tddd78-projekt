@@ -22,12 +22,11 @@ public class Hunter extends Tower
 
     public Hunter(final Point position, int id) {
 	super(position, id);
-	setStartingValues();
     }
     @Override public void renderImage(final Graphics g, final Point position) {
 	g.drawImage(LoadImage.HUNTER, position.x, position.y, null);
     }
-    @Override public void renderString(final Graphics g, final Point position) {
+    @Override public void renderString(final Graphics g) {
 	g.drawString("Artillery Cost: " + Constants.Towers.getTowerCost(TowerType.ARTILLERY), (int) (DIMENSION_X * 0.75), (int) (
 		DIMENSION_Y * 0.1));
     }
@@ -35,7 +34,7 @@ public class Hunter extends Tower
 	return Bullet.BulletType.ARROW;
     }
 
-    @Override public Tower createTower() {
+    @Override public Tower createTower(Point position, int id) {
 	return new Hunter(position, id);
     }
     @Override public TowerType getTowerType() {
@@ -43,7 +42,7 @@ public class Hunter extends Tower
     }
 
     @Override public void setStartingValues() {
-	this.firerate = HUNTER_FIRERATE;
+	this.fireRate = HUNTER_FIRERATE;
 	this.damage = HUNTER_DAMAGE;
 	this.range = HUNTER_RANGE;
     }

@@ -17,19 +17,14 @@ public class GameMouseListener extends MouseAdapter
     }
     @Override public void mouseClicked(final MouseEvent e) {
         if (e.getButton() == MouseEvent.BUTTON1) {
-            switch (GameStatus.gameStatus) {
+            switch (game.getGameStatus()) {
                 case PLAYING -> game.getPlayingScreen().handleMouseClick(e.getPoint());
                 case MENU -> game.getMenu().handleMouseClick(e.getPoint());
             }
         }
     }
     @Override public void mouseMoved(final MouseEvent e) {
-        switch (GameStatus.gameStatus) {
-            case PLAYING:
                 game.getPlayingScreen().handleMouseMove(e.getPoint());
-                break;
-            default:
-                break;
-        }
+
     }
 }

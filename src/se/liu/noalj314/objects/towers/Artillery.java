@@ -11,9 +11,6 @@ import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
 import static se.liu.noalj314.constants.Constants.Towers.ARTILLERY_DAMAGE;
 import static se.liu.noalj314.constants.Constants.Towers.ARTILLERY_FIRERATE;
 import static se.liu.noalj314.constants.Constants.Towers.ARTILLERY_RANGE;
-import static se.liu.noalj314.constants.Constants.Towers.HUNTER_DAMAGE;
-import static se.liu.noalj314.constants.Constants.Towers.HUNTER_FIRERATE;
-import static se.liu.noalj314.constants.Constants.Towers.HUNTER_RANGE;
 
 /**
  * The Artillery class represents an artillery tower in the game.
@@ -24,14 +21,13 @@ public class Artillery extends Tower
 {
     public Artillery(final Point position, int id) {
 	super(position, id);
-	setStartingValues();
     }
 
     @Override public void renderImage(final Graphics g, final Point position) {
 	g.drawImage(LoadImage.ARTILLERY, position.x, position.y, null);
     }
 
-    @Override public void renderString(final Graphics g, final Point position) {
+    @Override public void renderString(final Graphics g) {
 	g.drawString("Artillery Cost: " + Constants.Towers.getTowerCost(TowerType.ARTILLERY), (int) (DIMENSION_X * 0.75), (int) (
 		DIMENSION_Y * 0.1));
     }
@@ -40,7 +36,7 @@ public class Artillery extends Tower
 	return Bullet.BulletType.SHELL;
     }
 
-    @Override public Tower createTower() {
+    @Override public Tower createTower(Point position, int id) {
 	return new Artillery(position, id);
     }
 
@@ -49,7 +45,7 @@ public class Artillery extends Tower
     }
 
     @Override public void setStartingValues() {
-	this.firerate = ARTILLERY_FIRERATE;
+	this.fireRate = ARTILLERY_FIRERATE;
 	this.damage = ARTILLERY_DAMAGE;
 	this.range = ARTILLERY_RANGE;
     }

@@ -64,9 +64,6 @@ public class Bullet
     public void setDestroyed(boolean b) {
 	isDestroyed = b;
     }
-    public float getFreezeSpeed() {
-	return freezeSpeed;
-    }
     public float getX() {
 	return x;
     }

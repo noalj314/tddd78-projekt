@@ -22,14 +22,13 @@ public class Mage extends Tower
 {
     public Mage(final Point position, int id) {
 	super(position, id);
-	setStartingValues();
     }
 
     @Override public void renderImage(final Graphics g, final Point position) {
 	g.drawImage(LoadImage.MAGE, position.x, position.y, null);
     }
 
-    @Override public void renderString(final Graphics g, final Point position) {
+    @Override public void renderString(final Graphics g) {
 	g.drawString("Mage Cost: " + Constants.Towers.getTowerCost(TowerType.MAGE), (int) (DIMENSION_X * 0.75), (int) (DIMENSION_Y * 0.1));
 
     }
@@ -37,9 +36,8 @@ public class Mage extends Tower
 	return Bullet.BulletType.ICE;
     }
 
-    @Override public Tower createTower() {
+    @Override public Tower createTower(Point position, int id) {
 	return new Mage(position, id);
-
     }
 
     @Override public TowerType getTowerType() {
@@ -48,7 +46,7 @@ public class Mage extends Tower
 
     @Override public void setStartingValues() {
 	this.damage = MAGE_DAMAGE;
-	this.firerate = MAGE_FIRERATE;
+	this.fireRate = MAGE_FIRERATE;
 	this.range = MAGE_RANGE;
 	this.freezeSpeed = FREEZE_MULTIPLIER;
     }

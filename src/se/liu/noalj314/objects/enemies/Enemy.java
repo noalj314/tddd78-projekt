@@ -10,8 +10,8 @@ import se.liu.noalj314.handlers.EnemyHandler;
 public abstract class Enemy
 {
     protected int health, speed;
-    protected Float x;
-    protected Float y;
+    protected float x;
+    protected float y;
     protected boolean alive = true;
     protected EnemyType enemyType;
     private Direction lastDirection;

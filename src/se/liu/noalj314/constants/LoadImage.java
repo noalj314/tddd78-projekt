@@ -113,10 +113,10 @@ public class LoadImage
 	}
     }
 	private static BufferedImage scaleImage(BufferedImage source, int width, int height) {
-	    Image tmp = source.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+	    Image scaledImage = source.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 	    BufferedImage scaled = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 	    Graphics2D g2d = scaled.createGraphics();
-	    g2d.drawImage(tmp, 0, 0, null);
+	    g2d.drawImage(scaledImage, 0, 0, null);
 	    g2d.dispose();
 	    return scaled;
     }

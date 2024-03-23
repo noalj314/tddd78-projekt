@@ -11,5 +11,4 @@ public enum GameStatus
      * The current status of the game. This field is mutable because the game status changes
      * from MENU to PLAYING when the game starts, and potentially to other statuses in the future.
      */
-    public static GameStatus gameStatus = MENU;
 }

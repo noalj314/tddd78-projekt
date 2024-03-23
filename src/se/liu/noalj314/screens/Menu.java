@@ -40,7 +40,7 @@ public class Menu extends GameScreen implements Methods
 
     @Override public void handleMouseClick(Point point) {
 	if(start.getBorder().contains(point)) {
-	    GameStatus.gameStatus = GameStatus.PLAYING;
+	    getGame().setGameStatus(GameStatus.PLAYING);
 	}   else if(quit.getBorder().contains(point)) {
 	    System.exit(0);
 	}

@@ -1,9 +1,7 @@
 package se.liu.noalj314.handlers;
 import java.util.List;
 import java.util.ArrayList;
-import se.liu.noalj314.objects.towers.Artillery;
-import se.liu.noalj314.objects.towers.Hunter;
-import se.liu.noalj314.objects.towers.Mage;
+
 import se.liu.noalj314.screens.PlayingScreen;
 import se.liu.noalj314.objects.enemies.Enemy;
 import se.liu.noalj314.objects.towers.Tower;
@@ -46,7 +44,7 @@ public class TowerHandler
         for (Enemy enemy : enemiesCopy) {
             if (enemy.isAlive() && isEnemyInRange(enemy, tower) && tower.timeToShoot()) {
                 playingScreen.attack(tower, enemy);
-                tower.resetFirerateCounter();
+                tower.resetFireRateCounter();
             }
         }
     }
@@ -58,11 +56,7 @@ public class TowerHandler
     }
 
     public void addTower(Tower chosenTower, Point point) {
-        switch(chosenTower.getTowerType()) {
-            case MAGE -> towers.add(new Mage(point, towerCounter));
-            case ARTILLERY -> towers.add(new Artillery(point, towerCounter));
-            case HUNTER -> towers.add(new Hunter(point, towerCounter));
-        }
+        towers.add(chosenTower.createTower(point, towerCounter));
         towerCounter++;
     }
 

@@ -12,7 +12,6 @@ import se.liu.noalj314.objects.towers.Artillery;
 import se.liu.noalj314.objects.towers.Hunter;
 import se.liu.noalj314.objects.towers.Mage;
 import se.liu.noalj314.objects.towers.Tower;
-import se.liu.noalj314.objects.towers.TowerType;
 import se.liu.noalj314.projekt.Game;
 import se.liu.noalj314.projekt.GameState;
 import se.liu.noalj314.projekt.GameStatus;
@@ -62,7 +61,7 @@ public class PlayingScreen extends GameScreen implements Methods
             bulletHandler.update();
         } else {
             getGame().initClasses();
-            GameStatus.gameStatus = GameStatus.MENU;
+            getGame().setGameStatus(GameStatus.MENU);
         }
     }
 
@@ -84,7 +83,7 @@ public class PlayingScreen extends GameScreen implements Methods
             int range = (int) chosenTower.getRange();
             drawTowerRange(g, mousePos.x, mousePos.y, range);
             chosenTower.renderImage(g, mousePos);
-            chosenTower.renderString(g, mousePos);
+            chosenTower.renderString(g);
         }
     }
     private void drawTowerRange(Graphics g, int towerX, int towerY, int range){

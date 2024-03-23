@@ -1,12 +1,9 @@
 package se.liu.noalj314.handlers;
 
 import se.liu.noalj314.constants.LoadImage;
-import se.liu.noalj314.objects.Tile;
 import se.liu.noalj314.objects.TileType;
 
 import java.awt.image.BufferedImage;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * The TileHandler class is responsible for managing the tiles in the game.
@@ -14,7 +11,6 @@ import java.util.List;
  */
 public class TileHandler
 {
-    private List<Tile> tiles = new ArrayList<Tile>();
     public BufferedImage getImage(TileType tileType) {
 	switch (tileType) {
 	    case GRASS:

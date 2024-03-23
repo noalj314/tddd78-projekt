@@ -17,13 +17,8 @@ public class KeyboardListener extends KeyAdapter
     }
 
     @Override public void keyPressed(final KeyEvent e) {
-        switch (GameStatus.gameStatus) {
-            case PLAYING:
-                game.getPlayingScreen().keyPressed(e);
-                break;
-            default:
-                break;
+            game.getPlayingScreen().keyPressed(e);
         }
     }
 
-}
+

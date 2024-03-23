@@ -6,8 +6,6 @@ import se.liu.noalj314.constants.LoadImage;
 import se.liu.noalj314.objects.Bullet;
 import se.liu.noalj314.objects.enemies.Enemy;
 import se.liu.noalj314.objects.towers.Tower;
-import se.liu.noalj314.objects.towers.TowerType;
-
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
@@ -35,7 +33,7 @@ public class BulletHandler
 	for (Bullet bullet: bullets) {
 	    if(!bullet.isDestroyed()) {
 		bullet.shoot();
-		if(bulletHit(bullet)){
+		if(hasBulletHit(bullet)){
 		    bullet.setDestroyed(true);
 		    if(bullet.getBulletType().equals(Bullet.BulletType.SHELL)) {
 			bullet.triggerExplosion();
@@ -53,14 +51,14 @@ public class BulletHandler
 		return false;
 	return true;
     }
-    private boolean bulletHit(Bullet bullet) {
+    private boolean hasBulletHit(Bullet bullet) {
 	Rectangle bulletRect = new Rectangle((int)bullet.getX(), (int)bullet.getY(), BULLET_SIZE, BULLET_SIZE);
 	for (Enemy enemy : playingScreen.getEnemyHandler().getEnemies()) {
 	    Rectangle enemyRect = new Rectangle((int)enemy.getX(), (int)enemy.getY(), PIXEL_SIZE, PIXEL_SIZE);
 	    if (enemyRect.intersects(bulletRect)) {
 		enemy.decreaseHealth(bullet.getDamage());
 		if (bullet.getBulletType().equals(Bullet.BulletType.SHELL))
-		   explosionHit(bullet);
+		   handleExplosionHit(bullet);
 		else if (bullet.getBulletType().equals(Bullet.BulletType.ICE)) {
 		    enemy.decreaseSpeed(FREEZE_MULTIPLIER);
 		}
@@ -70,7 +68,7 @@ public class BulletHandler
 	return false;
     }
 
-    private void explosionHit(Bullet bullet){
+    private void handleExplosionHit(Bullet bullet){
 	for (Enemy enemy: playingScreen.getEnemyHandler().getEnemies()){
 	    float explosionRadius = ARTILLERY_RANGE;
 	    float xDistance = bullet.getX() - enemy.getX();
