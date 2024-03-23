@@ -1,16 +1,21 @@
 package se.liu.noalj314.objects.towers;
 
 import se.liu.noalj314.constants.Constants;
+import se.liu.noalj314.objects.Bullet;
 
 import java.awt.*;
 
 import static se.liu.noalj314.constants.Constants.Towers.*;
-
+/**
+ * The Tower abstract class represents a tower in the game.
+ * It maintains the properties of a tower such as its position, range, damage, and cost.
+ * It provides methods to attack enemies, upgrade the tower, and render its image and string.
+ */
 public abstract class Tower
 {
-    Point position;
-    TowerType type;
-    int firerateCounter, damage, id;
+    private Point position;
+    private TowerType type;
+    private int firerateCounter, damage, id;
     private float firerate, range, freezeSpeed;
     protected Tower(Point position, TowerType type, int id) {
         this.id = id;
@@ -53,6 +58,5 @@ public abstract class Tower
     }
     public abstract void renderImage(Graphics g, Point position);
     public abstract void renderString(Graphics g, Point position);
-
-
+    public abstract Bullet.BulletType getBulletType();
 }

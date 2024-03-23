@@ -14,96 +14,96 @@ public class LoadImage
     /**
      * The grass image used in the game.
      */
-    public static BufferedImage grass;
+    public final static BufferedImage GRASS;
 
     /**
      * The road image used in the game.
      */
-    public static BufferedImage road;
+    public final static BufferedImage ROAD;
 
     /**
      * The water image used in the game.
      */
-    public static BufferedImage water;
+    public final static BufferedImage WATER;
 
     /**
      * The bat image used in the game.
      */
-    public static BufferedImage bat;
+    public final static BufferedImage BAT;
 
     /**
      * The rat image used in the game.
      */
-    public static BufferedImage rat;
+    public final static BufferedImage RAT;
 
     /**
      * The bear image used in the game.
      */
-    public static BufferedImage bear;
+    public final static BufferedImage BEAR;
 
     /**
      * The humanoid image used in the game.
      */
-    public static BufferedImage humanoid;
+    public final static BufferedImage HUMANOID;
 
     /**
      * The mage image used in the game.
      */
-    public static BufferedImage mage;
+    public final static BufferedImage MAGE;
 
     /**
      * The artillery image used in the game.
      */
-    public static BufferedImage artillery;
+    public final static BufferedImage ARTILLERY;
 
     /**
      * The hunter image used in the game.
      */
-    public static BufferedImage hunter;
+    public final static BufferedImage HUNTER;
 
     /**
      * The arrow image used in the game.
      */
-    public static BufferedImage arrow;
+    public final static BufferedImage ARROW;
 
     /**
      * The shell image used in the game.
      */
-    public static BufferedImage shell;
+    public final static BufferedImage SHELL;
 
     /**
      * The ice bolt image used in the game.
      */
-    public static BufferedImage icebolt;
+    public final static BufferedImage ICEBOLT;
 
     /**
      * The explosion image used in the game.
      */
-    public static BufferedImage explosion;
+    public final static BufferedImage EXPLOSION;
 
     /**
      * The freeze image used in the game.
      */
-    public static BufferedImage freeze;
+    public final static BufferedImage FREEZE;
 
 
     static {
 	try {
-	    grass = loadImage("/images/grass.png");
-	    road = loadImage("/images/road.png");
-	    water = loadImage("/images/water.png");
-	    bat = loadImage("/images/bat.png");
-	    rat = loadImage("/images/rat.png");
-	    bear = loadImage("/images/bear.png");
-	    humanoid = loadImage("/images/humanoid.png");
-	    mage = loadImage("/images/mage.png");
-	    artillery = loadImage("/images/artillery.png");
-	    hunter = loadImage("/images/hunter.png");
-	    arrow = loadImage("/images/arrow.png");
-	    shell = loadImage("/images/shell.png");
-	    icebolt = loadImage("/images/ice.png");
-	    explosion = loadImage("/images/explosion.png");
-	    freeze = loadImage("/images/freeze.png");
+	    GRASS = loadImage("/images/grass.png", PIXEL_SIZE);
+	    ROAD = loadImage("/images/road.png", PIXEL_SIZE);
+	    WATER = loadImage("/images/water.png", PIXEL_SIZE);
+	    BAT = loadImage("/images/bat.png", PIXEL_SIZE);
+	    RAT = loadImage("/images/rat.png", PIXEL_SIZE);
+	    BEAR = loadImage("/images/bear.png", PIXEL_SIZE);
+	    HUMANOID = loadImage("/images/humanoid.png", PIXEL_SIZE);
+	    MAGE = loadImage("/images/mage.png", PIXEL_SIZE);
+	    ARTILLERY = loadImage("/images/artillery.png", PIXEL_SIZE);
+	    HUNTER = loadImage("/images/hunter.png", PIXEL_SIZE);
+	    ARROW = loadImage("/images/arrow.png", BULLET_SIZE);
+	    SHELL = loadImage("/images/shell.png", BULLET_SIZE);
+	    ICEBOLT = loadImage("/images/ice.png",BULLET_SIZE);
+	    EXPLOSION = loadImage("/images/explosion.png",PIXEL_SIZE);
+	    FREEZE = loadImage("/images/freeze.png", PIXEL_SIZE);
 	} catch (IOException e) {
 	    throw new RuntimeException(e);
 	}
@@ -116,9 +116,10 @@ public class LoadImage
 	    g2d.dispose();
 	    return scaled;
     }
-    private static BufferedImage loadImage(String path) throws IOException {
-	InputStream imgStream = LoadImage.class.getResourceAsStream(path);
-	BufferedImage img = ImageIO.read(imgStream);
-	return scaleImage(img, Constants.PIXEL_SIZE, Constants.PIXEL_SIZE);
+    private static BufferedImage loadImage(String path, int scaling) throws IOException {
+	try (InputStream imgStream = LoadImage.class.getResourceAsStream(path)) {
+	    BufferedImage img = ImageIO.read(imgStream);
+	    return scaleImage(img, scaling, scaling);
+	}
     }
 }

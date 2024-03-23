@@ -7,18 +7,29 @@ import se.liu.noalj314.objects.enemies.Enemy;
 import se.liu.noalj314.objects.enemies.EnemyType;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
+import static se.liu.noalj314.constants.Constants.SPAWN_DECREASE_MULTIPLIER;
+import static se.liu.noalj314.constants.Constants.WAVE_INTERVAL;
+
+/**
+ * The WaveHandler class is responsible for managing the waves of enemies in the game.
+ * It maintains the current wave, handles the spawning of enemies, and manages the progression of waves.
+ * It also provides methods to create new waves and to increase the number of enemies for the next wave.
+ */
 public class WaveHandler
 {
     private PlayingScreen playingScreen;
+    private static final Random RANDOM = new Random();
+
     private double spawnTickLimit = Constants.UPS;
     private double spawnTick = spawnTickLimit;
     private double waveLimitTick = Constants.UPS * 5;
     private double waveTick = waveLimitTick;
     private int indexEnemy;
     private int amountOfEnemiesInWave = Constants.AMOUNT_OF_ENEMIES;
-    private Wave currentWave;
+    private Wave currentWave = null;
     private int waveCounter;
 
 
@@ -30,10 +41,10 @@ public class WaveHandler
 	if (spawnTick < spawnTickLimit) {
 	    spawnTick++;
 	}
-	if (waveTick < waveLimitTick && endOfWave()) {
+	if (waveTick < waveLimitTick && isEndOfWave()) {
 	    waveTick++;
 	}
-	if (endOfWave() && timeForWave()){
+	if (isEndOfWave() && timeForWave()){
 	    increaseEnemiesForNextWave();
 	    createNewWave();
 	}
@@ -43,22 +54,21 @@ public class WaveHandler
     }
 
     public void createNewWave(){
-	Random random = new Random();
 	EnemyType[] types = EnemyType.values();
-	ArrayList<EnemyType> enemyWaveList = new ArrayList<>();
+	List<EnemyType> enemyWaveList = new ArrayList<>();
 
 	for (int i=0 ; i < amountOfEnemiesInWave; i++) {
-	    EnemyType randomType = types[random.nextInt(types.length)];
+	    EnemyType randomType = types[RANDOM.nextInt(types.length)];
 	    enemyWaveList.add(randomType);
 	}
 	currentWave = new Wave(enemyWaveList);
 	indexEnemy = 0;
 	waveCounter++;
-	if (waveCounter % 5 != 0) {
-	    spawnTickLimit *= 0.9;
+	if (waveCounter % WAVE_INTERVAL != 0) {
+	    spawnTickLimit *= SPAWN_DECREASE_MULTIPLIER;
 	}
     }
-    public boolean endOfWave(){
+    public boolean isEndOfWave(){
 	if (enemiesLeftToSpawn()) {
 	    return false;
 	}
@@ -87,6 +97,4 @@ public class WaveHandler
     public int getWaveCounter(){
 	return waveCounter;
     }
-
-
 }

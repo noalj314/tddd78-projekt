@@ -1,17 +1,12 @@
 package se.liu.noalj314.objects;
 
 import java.awt.image.BufferedImage;
-
+/**
+ * The Tile class represents a tile in the game.
+ */
 public class Tile
 {
-    private TileType tileType;
-    private BufferedImage image;
-    public Tile(TileType tileType, BufferedImage image) {
-        this.tileType = tileType;
-        this.image = image;
-    }
 
-    public TileType getTileType() {
-        return tileType;
+    public Tile(TileType tileType) {
     }
 }

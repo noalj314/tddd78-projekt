@@ -35,7 +35,6 @@ public class PlayingScreen extends GameScreen implements Methods
 {
     private TileType[][] map;
     private TileHandler tileHandler;
-    private Button menu = null;
     private EnemyHandler enemyHandler;
     private TowerHandler towerHandler;
     private BulletHandler bulletHandler;
@@ -84,9 +83,9 @@ public class PlayingScreen extends GameScreen implements Methods
         g.setFont(new Font("Sans", Font.BOLD, 20));
         if (chosenTower != null) {
             int range = (int) chosenTower.getRange();
-            int towerCost = Constants.Towers.getTowerCost(chosenTower.getTowerType());
             drawTowerRange(g, mousePos.x, mousePos.y, range);
             chosenTower.renderImage(g, mousePos);
+            chosenTower.renderString(g, mousePos);
         }
     }
     private void drawTowerRange(Graphics g, int towerX, int towerY, int range){
@@ -104,7 +103,7 @@ public class PlayingScreen extends GameScreen implements Methods
                 int towerCost = Constants.Towers.getTowerCost(chosenTower.getTowerType());
                 if (gameState.getCoins() >= towerCost) {
                     towerHandler.addTower(chosenTower, new Point((point.x / PIXEL_SIZE) * PIXEL_SIZE, (point.y / PIXEL_SIZE) * PIXEL_SIZE)); //so it snaps
-                    gameState.setCoins(gameState.getCoins() - Constants.Towers.getTowerCost(chosenTower.getTowerType())); // remove coins
+                    gameState.setCoins(gameState.getCoins() - towerCost);
                 }
             }
         } else {
@@ -163,7 +162,7 @@ public class PlayingScreen extends GameScreen implements Methods
     }
 
     public void attack( Tower tower,  Enemy enemy) {
-        bulletHandler.newBullet(enemy, tower);
+        bulletHandler.createBullet(enemy, tower);
     }
     public EnemyHandler getEnemyHandler() {
         return enemyHandler;

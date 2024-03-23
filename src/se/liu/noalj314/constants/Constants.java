@@ -66,6 +66,15 @@ public class Constants
      * The FREEZETICKLIMIT constant represents the limit of freeze ticks in the game.
      */
     public static final int FREEZE_TICK_LIMIT = (int) (UPS * 3);
+
+    /**
+     * The WAVE_INTERVAL constant represents when the difficulty of the game should be increased
+     */
+    public static final int WAVE_INTERVAL = 5;
+    /**
+     * The WAVE_INTERVAL constant represents when the difficulty of the game should be increased
+     */
+    public static final float SPAWN_DECREASE_MULTIPLIER = 0.9f;
     public static class Enemies {
         public static int getReward(EnemyType enemyType) {
             return switch (enemyType) {

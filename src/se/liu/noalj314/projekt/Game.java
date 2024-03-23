@@ -2,10 +2,7 @@ package se.liu.noalj314.projekt;
 
 import se.liu.noalj314.screens.Menu;
 import se.liu.noalj314.screens.PlayingScreen;
-import se.liu.noalj314.constants.LoadImage;
-
 import se.liu.noalj314.objects.TileType;
-
 import javax.swing.*;
 
 
@@ -19,8 +16,9 @@ import static se.liu.noalj314.constants.Constants.UPS;
  * sets up the game window, and contains the main game loop. It also handles the game state
  * and switches between the MENU and PLAYING states.
  */
-public class Game extends JFrame implements Runnable
+public class Game implements Runnable
 {
+    private JFrame frame = null;
     private GamePanel gamePanel = null;
     private Menu menu = null;
     private TileType[][] map;
@@ -33,13 +31,14 @@ public class Game extends JFrame implements Runnable
 	playingScreen = new PlayingScreen(this);
     }
     public Game(){
+	frame = new JFrame();
 	initClasses();
 	this.map = MapMaker.MAP;
-	this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	this.add(gamePanel);
-	this.setLocationRelativeTo(null);
-	this.pack();
-	this.setVisible(true);
+	frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	frame.add(gamePanel);
+	frame.setLocationRelativeTo(null);
+	frame.pack();
+	frame.setVisible(true);
     }
     private void updateGame() {
 	switch (GameStatus.gameStatus) {
@@ -74,7 +73,7 @@ public class Game extends JFrame implements Runnable
 	    //painting
 	    if (currentTime - latestFrame >= timeForEachFrame) {
 		latestFrame = currentTime;
-		repaint();
+		frame.repaint();
 	    }
 	}
     }

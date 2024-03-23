@@ -11,19 +11,21 @@ import se.liu.noalj314.objects.towers.TowerType;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-
+import java.util.List;
 import static se.liu.noalj314.constants.Constants.BULLET_SIZE;
 import static se.liu.noalj314.constants.Constants.DIMENSIONX;
 import static se.liu.noalj314.constants.Constants.DIMENSIONY;
 import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 
-
+/**
+ * The BulletHandler class manages the bullets in the game.
+ * It contains methods for updating the state of bullets, checking for collisions,
+ * rendering bullets and their explosions, and creating new bullets.
+ */
 public class BulletHandler
 {
-    private ArrayList<Bullet> bullets = new ArrayList<>();
+    private List<Bullet> bullets = new ArrayList<>();
     private PlayingScreen playingScreen;
-    private boolean renderExplosion = false;
-    private int explosionTime;
     public BulletHandler(PlayingScreen playingScreen) {
 	this.playingScreen = playingScreen;
     }
@@ -36,14 +38,14 @@ public class BulletHandler
 		    if(bullet.getBulletType().equals(Bullet.BulletType.SHELL)) {
 			bullet.triggerExplosion();
 		    }
-		} else if (bulletInAbyss(bullet)) {
+		} else if (isBulletOutsideMap(bullet)) {
 		    bullet.setDestroyed(true);
 		}
 	    }
 	    bullet.incrementExplosionTime(); // Manage explosion timing per bullet
 	}
     }
-    private boolean bulletInAbyss(Bullet bullet){
+    private boolean isBulletOutsideMap(Bullet bullet){
 	if (bullet.getX() >= 0 || bullet.getX() <= DIMENSIONX)
 	    if (bullet.getY() >= 0 || bullet.getY() <= DIMENSIONY)
 		return false;
@@ -90,41 +92,36 @@ public class BulletHandler
 	}
 	}
     private void renderExplosion(Bullet bullet, Graphics g){
-	g.drawImage(LoadImage.explosion, (int) bullet.getX(), (int) bullet.getY(), null);
+	g.drawImage(LoadImage.EXPLOSION, (int) bullet.getX(), (int) bullet.getY(), null);
     }
     private void renderBullet(Bullet bullet, Graphics g) {
 	g.drawImage(getBulletImage(bullet.getBulletType()), (int) bullet.getX(), (int) bullet.getY(), null);
     }
 
 
-    public void newBullet(Enemy enemy, Tower tower){
+    public void createBullet(Enemy enemy, Tower tower){
 	int xRange = (int) (tower.getPosition().x - enemy.getX());
 	int yRange = (int) (tower.getPosition().y - enemy.getY());
 	float angle = (float) Math.atan2(yRange, xRange);
-	float xVelocity = (float) (Constants.Bullets.getVelocity(getBulletType(tower)) * Math.cos(angle));
-	float yVelocity = (float) (Constants.Bullets.getVelocity(getBulletType(tower)) * Math.sin(angle));
-	bullets.add(new Bullet(tower.getPosition().x, tower.getPosition().y, getBulletType(tower), -xVelocity ,-yVelocity, tower.getDamage(), tower.getFreezeSpeed()));
+	Bullet.BulletType bulletType = tower.getBulletType();
+	float bulletVelocity = Constants.Bullets.getVelocity(bulletType);
+	float xVelocity = (float) (bulletVelocity * Math.cos(angle));
+	float yVelocity = (float) (bulletVelocity * Math.sin(angle));
+	bullets.add(new Bullet(tower.getPosition().x, tower.getPosition().y, bulletType, -xVelocity ,-yVelocity, tower.getDamage(), tower.getFreezeSpeed()));
     }
     private BufferedImage getBulletImage(Bullet.BulletType bulletType) {
 	switch (bulletType) {
 	    case SHELL -> {
-		return LoadImage.shell;
+		return LoadImage.SHELL;
 	    }
 	    case ICE -> {
-		return LoadImage.icebolt;
+		return LoadImage.ICEBOLT;
 	    }
 	    case ARROW -> {
-		return LoadImage.arrow;
+		return LoadImage.ARROW;
 	    }
 	}
 	return null;
     }
-    private Bullet.BulletType getBulletType(Tower tower){
-	switch(tower.getTowerType()) {
-	    case MAGE -> {return Bullet.BulletType.ICE;}
-	    case HUNTER -> {return Bullet.BulletType.ARROW;}
-	    case ARTILLERY -> {return Bullet.BulletType.SHELL;}
-	}
-	return null;
-    }
+
 }

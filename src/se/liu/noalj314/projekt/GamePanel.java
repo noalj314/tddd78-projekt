@@ -2,7 +2,7 @@ package se.liu.noalj314.projekt;
 import java.awt.Graphics;
 import java.awt.Dimension;
 import se.liu.noalj314.listeners.KeyboardListener;
-import se.liu.noalj314.listeners.MouseListener;
+import se.liu.noalj314.listeners.GameMouseListener;
 import javax.swing.JPanel;
 import static se.liu.noalj314.constants.Constants.DIMENSIONX;
 import static se.liu.noalj314.constants.Constants.DIMENSIONY;
@@ -19,7 +19,7 @@ public class GamePanel extends JPanel
     }
     public void initKeyAndMouse(){
 	KeyboardListener keyboardListener = new KeyboardListener(game);
-	MouseListener mouseListener = new MouseListener(game);
+	GameMouseListener mouseListener = new GameMouseListener(game);
         addMouseListener(mouseListener);
         addMouseMotionListener(mouseListener);
         addKeyListener(keyboardListener);

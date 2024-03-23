@@ -1,15 +1,16 @@
 package se.liu.noalj314.objects;
 
-import java.awt.*;
-
 import static se.liu.noalj314.constants.Constants.UPS;
-
+/**
+ * The Bullet class represents a bullet in the game.
+ * It maintains the position, velocity, damage, type, and other properties of a bullet.
+ * It provides methods to shoot the bullet, check if it's destroyed, trigger and render explosion, and get its properties.
+ */
 public class Bullet
 {
     private float x, y, xVelocity, yVelocity;
     private int damage;
     private BulletType bulletType;
-
     private boolean isDestroyed = false;
     private int explosionTime = 0;
     private boolean shouldRenderExplosion = false;
@@ -36,14 +37,6 @@ public class Bullet
 	return isDestroyed;
     }
 
-    public float getX() {
-	return x;
-    }
-
-    public float getY() {
-	return y;
-    }
-
     public boolean shouldRenderExplosion() {
 	return shouldRenderExplosion && explosionTime < UPS;
     }
@@ -68,19 +61,18 @@ public class Bullet
     public int getDamage() {
 	return damage;
     }
-    public int get() {
-	return damage;
-    }
-
-    public void setPos(float x, float y) {
-	this.x = x;
-	this.y = y;
-    }
     public void setDestroyed(boolean b) {
 	isDestroyed = b;
     }
     public float getFreezeSpeed() {
 	return freezeSpeed;
+    }
+    public float getX() {
+	return x;
+    }
+
+    public float getY() {
+	return y;
     }
 
 }
