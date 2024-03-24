@@ -1,5 +1,6 @@
 package se.liu.noalj314.handlers;
 
+import se.liu.noalj314.misc.LoggingHandler;
 import se.liu.noalj314.screens.PlayingScreen;
 import se.liu.noalj314.constants.Constants;
 import se.liu.noalj314.constants.LoadImage;
@@ -11,6 +12,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
 
 import static se.liu.noalj314.constants.Constants.AMOUNT_OF_TILES;
 import static se.liu.noalj314.constants.Constants.Enemies.getSpeed;
@@ -46,7 +48,9 @@ public class EnemyHandler
     }
 
     private void spawnEnemy() {
-	addEnemy(playingScreen.getWaveHandler().getNextEnemy());
+	EnemyType enemyType = playingScreen.getWaveHandler().getNextEnemy();
+	addEnemy(enemyType);
+	LoggingHandler.LOGGER.log(Level.INFO, "A new enemy has been spawned: " + enemyType);
     }
 
     public boolean isTimeForSpawn(){
@@ -57,14 +61,19 @@ public class EnemyHandler
     }
 
     private void moveEnemy(Enemy enemy) {
-	if (enemy.getLastDirection() == Direction.FIRST)
-	    changeDirection(enemy);
-	int newX = (int) (enemy.getX() + getSpeedX(enemy.getLastDirection(), enemy));
-	int newY = (int) (enemy.getY() + getSpeedY(enemy.getLastDirection(), enemy));
-	if (playingScreen.getGame().getTileTypeAt(newX, newY).equals(TileType.ROAD)) {
-	    enemy.move(getSpeed(enemy.getEnemyType()), enemy.getLastDirection());
-	} else {
-	    changeDirection(enemy);
+	try {
+	    if (enemy.getLastDirection() == Direction.FIRST)
+		changeDirection(enemy);
+	    int newX = (int) (enemy.getX() + getSpeedX(enemy.getLastDirection(), enemy));
+	    int newY = (int) (enemy.getY() + getSpeedY(enemy.getLastDirection(), enemy));
+	    if (playingScreen.getGame().getTileTypeAt(newX, newY).equals(TileType.ROAD)) {
+		enemy.move(getSpeed(enemy.getEnemyType()), enemy.getLastDirection());
+		LoggingHandler.LOGGER.log(Level.INFO, "Enemy moved: " + enemy.getEnemyType());
+	    } else {
+		changeDirection(enemy);
+	    }
+	} catch (RuntimeException e) {
+	    LoggingHandler.LOGGER.log(Level.SEVERE, "An error occurred while moving the enemy", e);
 	}
     }
 
@@ -107,6 +116,7 @@ public class EnemyHandler
 	if (noMoreMap(enemy) && enemy.isAlive()) {
 	    enemy.kill();
 	    playingScreen.getGameState().decreaseHp();
+	    LoggingHandler.LOGGER.log(Level.INFO, "Enemy removed: " + enemy.getEnemyType());
 	}
     }
     private void fixEnemyDimension(Enemy enemy, Direction direction, int xTile, int yTile) {
@@ -151,7 +161,8 @@ public class EnemyHandler
 
     private void renderFreeze( Enemy enemy,  Graphics g) {
 	if (enemy.isFreezed()){
-		g.drawImage(LoadImage.FREEZE, (int) enemy.getX(), (int)enemy.getY(), null);
+	    g.drawImage(LoadImage.FREEZE, (int) enemy.getX(), (int)enemy.getY(), null);
+	    LoggingHandler.LOGGER.log(Level.INFO, "Enemy is frozen: " + enemy.getEnemyType());
 	}
     }
 
@@ -188,13 +199,8 @@ public class EnemyHandler
     private void addEnemy(EnemyType enemyType) {
 	float xTile = START_X; //no idea why it needs to be multipled by 2 but it works
 	float yTile = START_Y; //no idea why it needs to be multipled by 2 but it works
+	enemies.add(new Enemy(xTile, yTile, enemyType, this));
 
-	switch (enemyType) {
-	    case BAT -> enemies.add(new Bat(xTile, yTile, this));
-	    case RAT -> enemies.add(new Rat(xTile, yTile, this));
-	    case BEAR -> enemies.add(new Bear(xTile, yTile, this));
-	    case HUMANOID -> enemies.add(new Humanoid(xTile, yTile, this));
-	}
     }
     public List<Enemy> getEnemies(){
 	return enemies;

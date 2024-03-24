@@ -10,7 +10,7 @@ import static se.liu.noalj314.constants.Constants.DIMENSION_X;
 import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
 import static se.liu.noalj314.constants.Constants.Towers.FREEZE_MULTIPLIER;
 import static se.liu.noalj314.constants.Constants.Towers.MAGE_DAMAGE;
-import static se.liu.noalj314.constants.Constants.Towers.MAGE_FIRERATE;
+import static se.liu.noalj314.constants.Constants.Towers.MAGE_FIRE_RATE;
 import static se.liu.noalj314.constants.Constants.Towers.MAGE_RANGE;
 
 /**
@@ -46,7 +46,7 @@ public class Mage extends Tower
 
     @Override public void setStartingValues() {
 	this.damage = MAGE_DAMAGE;
-	this.fireRate = MAGE_FIRERATE;
+	this.fireRate = MAGE_FIRE_RATE;
 	this.range = MAGE_RANGE;
 	this.freezeSpeed = FREEZE_MULTIPLIER;
     }

@@ -1,11 +1,15 @@
 package se.liu.noalj314.constants;
 
+import se.liu.noalj314.misc.LoggingHandler;
+
 import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.logging.Level;
 
+import se.liu.noalj314.misc.LoggingHandler;
 import static se.liu.noalj314.constants.Constants.BULLET_SIZE;
 import static se.liu.noalj314.constants.Constants.PIXEL_SIZE;
 
@@ -106,27 +110,35 @@ public class LoadImage
 	    ARROW = loadImage("/images/arrow.png", BULLET_SIZE);
 	    SHELL = loadImage("/images/shell.png", BULLET_SIZE);
 	    ICE_BOLT = loadImage("/images/ice.png", BULLET_SIZE);
-	    EXPLOSION = loadImage("/images/explosion.png",PIXEL_SIZE);
+	    EXPLOSION = loadImage("/images/explosion.png", PIXEL_SIZE);
 	    FREEZE = loadImage("/images/freeze.png", PIXEL_SIZE);
 	} catch (IOException e) {
 	    throw new RuntimeException(e);
 	}
     }
-	private static BufferedImage scaleImage(BufferedImage source, int width, int height) {
-	    Image scaledImage = source.getScaledInstance(width, height, Image.SCALE_SMOOTH);
-	    BufferedImage scaled = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+    private static BufferedImage scaleImage(BufferedImage source, int width, int height) {
+	Image scaledImage = source.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+	BufferedImage scaled = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+	try {
 	    Graphics2D g2d = scaled.createGraphics();
 	    g2d.drawImage(scaledImage, 0, 0, null);
 	    g2d.dispose();
-	    return scaled;
+	} catch (Exception e) {
+	    LoggingHandler.LOGGER.log(Level.SEVERE, "An error occured while scaling image", e);
+	}
+	return scaled;
     }
+
     private static BufferedImage loadImage(String path, int scaling) throws IOException {
 	try (InputStream imgStream = LoadImage.class.getResourceAsStream(path)) {
 	    if (imgStream == null) {
+		LoggingHandler.LOGGER.log(Level.SEVERE, "Resource not found: " + path);
 		throw new IOException("Resource not found: " + path);
 	    }
 	    BufferedImage img = ImageIO.read(imgStream);
 	    if (img == null) {
+		LoggingHandler.LOGGER.log(Level.SEVERE, "Failed to read image: " + path);
 		throw new IOException("Failed to read image: " + path);
 	    }
 	    return scaleImage(img, scaling, scaling);

@@ -174,19 +174,19 @@ public class Constants
         /**
          * The damage of the artillery in the game.
          */
-        public static final int ARTILLERY_DAMAGE = 6;
+        public static final int ARTILLERY_DAMAGE = 10;
         /**
          * The firerate of the mage in the game.
          */
-        public static final int MAGE_FIRERATE = 60;
+        public static final int MAGE_FIRE_RATE = 60;
         /**
          * The firerate of the hunter in the game.
          */
-        public static final int HUNTER_FIRERATE = 40;
+        public static final int HUNTER_FIRE_RATE = 40;
         /**
          * The firerate of the artillery in the game.
          */
-        public static final int ARTILLERY_FIRERATE = 120;
+        public static final int ARTILLERY_FIRE_RATE = 120;
         /**
          * The range of the hunter in the game.
          */

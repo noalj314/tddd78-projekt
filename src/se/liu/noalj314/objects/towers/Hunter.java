@@ -9,7 +9,7 @@ import java.awt.*;
 import static se.liu.noalj314.constants.Constants.DIMENSION_X;
 import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
 import static se.liu.noalj314.constants.Constants.Towers.HUNTER_DAMAGE;
-import static se.liu.noalj314.constants.Constants.Towers.HUNTER_FIRERATE;
+import static se.liu.noalj314.constants.Constants.Towers.HUNTER_FIRE_RATE;
 import static se.liu.noalj314.constants.Constants.Towers.HUNTER_RANGE;
 
 /**
@@ -42,7 +42,7 @@ public class Hunter extends Tower
     }
 
     @Override public void setStartingValues() {
-	this.fireRate = HUNTER_FIRERATE;
+	this.fireRate = HUNTER_FIRE_RATE;
 	this.damage = HUNTER_DAMAGE;
 	this.range = HUNTER_RANGE;
     }

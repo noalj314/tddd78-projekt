@@ -160,7 +160,6 @@ public class PlayingScreen extends GameScreen implements Methods
     }
 
     public void attack( Tower tower,  Enemy enemy) {
-        System.out.println("ist his caleld");
         bulletHandler.createBullet(enemy, tower);
     }
     public EnemyHandler getEnemyHandler() {

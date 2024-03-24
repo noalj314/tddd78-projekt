@@ -14,7 +14,6 @@ public class Bullet
     private boolean isDestroyed = false;
     private int explosionTime = 0;
     private boolean shouldRenderExplosion = false;
-    private float freezeSpeed;
 
     public enum BulletType
     {
@@ -27,7 +26,6 @@ public class Bullet
 	this.y = y;
 	this.xVelocity = xVelocity;
 	this.yVelocity = yVelocity;
-	this.freezeSpeed = freezeSpeed;
     }
     public void shoot() {
 	this.x += this.xVelocity;

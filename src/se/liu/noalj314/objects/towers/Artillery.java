@@ -9,7 +9,7 @@ import java.awt.*;
 import static se.liu.noalj314.constants.Constants.DIMENSION_X;
 import static se.liu.noalj314.constants.Constants.DIMENSION_Y;
 import static se.liu.noalj314.constants.Constants.Towers.ARTILLERY_DAMAGE;
-import static se.liu.noalj314.constants.Constants.Towers.ARTILLERY_FIRERATE;
+import static se.liu.noalj314.constants.Constants.Towers.ARTILLERY_FIRE_RATE;
 import static se.liu.noalj314.constants.Constants.Towers.ARTILLERY_RANGE;
 
 /**
@@ -45,7 +45,7 @@ public class Artillery extends Tower
     }
 
     @Override public void setStartingValues() {
-	this.fireRate = ARTILLERY_FIRERATE;
+	this.fireRate = ARTILLERY_FIRE_RATE;
 	this.damage = ARTILLERY_DAMAGE;
 	this.range = ARTILLERY_RANGE;
     }

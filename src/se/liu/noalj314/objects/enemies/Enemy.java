@@ -3,11 +3,11 @@ package se.liu.noalj314.objects.enemies;
 import se.liu.noalj314.constants.Constants;
 import se.liu.noalj314.handlers.EnemyHandler;
 /**
- * The Enemy abstract class represents an enemy in the game.
+ * The Enemy  class represents an enemy in the game.
  * It maintains the health, speed, position, type, and other properties of an enemy.
  * It provides methods to move the enemy, decrease its health and speed, check if it's alive or frozen, and get its properties.
  */
-public abstract class Enemy
+public class Enemy
 {
     protected int health, speed;
     protected float x;
@@ -20,7 +20,7 @@ public abstract class Enemy
     protected int freezeTick = freezeTickLimit;
     private float freezeSpeed;
 
-    protected Enemy(float x, float y, EnemyType enemyType, EnemyHandler enemyHandler) {
+    public Enemy(float x, float y, EnemyType enemyType, EnemyHandler enemyHandler) {
         this.x = x;
         this.y = y;
         this.enemyType = enemyType;

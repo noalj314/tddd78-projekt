@@ -107,7 +107,7 @@ public class BulletHandler
 	float bulletVelocity = Constants.Bullets.getVelocity(bulletType);
 	float xVelocity = (float) (bulletVelocity * Math.cos(angle));
 	float yVelocity = (float) (bulletVelocity * Math.sin(angle));
-	bullets.add(new Bullet(tower.getPosition().x, tower.getPosition().y, bulletType, -xVelocity ,-yVelocity, tower.getDamage(), tower.getFreezeSpeed()));
+	bullets.add(new Bullet(tower.getPosition().x + PIXEL_SIZE/2, tower.getPosition().y+ PIXEL_SIZE/2, bulletType, -xVelocity ,-yVelocity, tower.getDamage(), tower.getFreezeSpeed()));
     }
     private BufferedImage getBulletImage(Bullet.BulletType bulletType) {
 	switch (bulletType) {
